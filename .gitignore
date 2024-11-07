@@ -1,0 +1,97 @@
+# Tệp do hệ thống tạo
+*.DS_Store
+*.log
+*.pdb
+*.obj
+*.exe
+*.dll
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Thư mục xuất bản
+bin/
+obj/
+out/
+
+# Các thư mục, tệp tạm và log
+*.vs
+.vscode/
+.idea/
+*.vscode/
+
+# Tệp ASP.NET auto-generated
+project.lock.json
+project.fragment.lock.json
+project.json
+project.fragment.json
+
+# Thư mục gói cài đặt
+packages/
+*.nupkg
+*.snupkg
+
+# Các file cấu hình tạm
+*.swp
+*~.nib
+
+# Thư mục chứa cấu hình phát triển môi trường
+Properties/launchSettings.json
+
+# Các file cục bộ hệ thống
+.vs/
+.env
+.env.*
+
+# Nội dung database hoặc cache
+*.mdf
+*.ldf
+node_modules/
+npm-debug.log
+
+# Log của hệ thống hoặc của ứng dụng
+*.log
+logs/
+
+# Build artifacts
+*.bak
+*.cache
+*.diff
+*.orig
+*.rej
+*.so
+*.dll
+*.exe
+*.out
+*.class
+*.idb
+*.ilk
+*.lib
+*.exp
+*.jar
+*.war
+*.ear
+*.app
+*.ipa
+*.apk
+*.dSYM/
+*.a
+*.o
+*.lo
+*.la
+*.mod
+*.cmd
+*.dtbo
+*.su
+*.gcno
+*.gcda
+*.gcov
+*.lst
+*.symdefs
+*.map
+*.dbg
+*.d
+*.gch
+*.pch
+*.xdsRapidity
