@@ -1,0 +1,128 @@
+﻿@page
+@model CoffeShop.Pages.CoffeApp.HomeModel
+@{
+}
+<!DOCTYPE html>
+<html lang="eng" class="no-js">
+<head>
+	<!-- Mobile Specific Meta -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Favicon-->
+	<link rel="shortcut icon" href="img/fav.png">
+	<!-- Author Meta -->
+	<meta name="author" content="codepixer">
+	<!-- Meta Description -->
+	<meta name="description" content="">
+	<!-- Meta Keyword -->
+	<meta name="keywords" content="">
+	<!-- meta character set -->
+	<meta charset="UTF-8">
+	<!-- Site Title -->
+	<title>Coffee</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+	<!--
+	CSS
+	============================================= -->
+	<link rel="stylesheet" href="~/theme/css/linearicons.css">
+	<link rel="stylesheet" href="~/theme/css/font-awesome.min.css">
+	<link rel="stylesheet" href="~/theme/css/bootstrap.css">
+	<link rel="stylesheet" href="~/theme/css/magnific-popup.css">
+	<link rel="stylesheet" href="~/theme/css/nice-select.css">
+	<link rel="stylesheet" href="~/theme/css/animate.min.css">
+	<link rel="stylesheet" href="~/theme/css/owl.carousel.css">
+	<link rel="stylesheet" href="~/theme/css/main.css">
+</head>
+<body>
+
+	<!-- #header -->
+	@await Html.PartialAsync("Shared/Header")
+	<!-- start banner Area -->
+	@await Html.PartialAsync("Shared/Banner")
+	<!-- End banner Area -->
+	<!-- Start video-sec Area -->
+	@await Html.PartialAsync("Shared/VideoHome")
+	<!-- End video-sec Area -->
+	<!-- Start menu Area -->
+	<section class="menu-area section-gap" id="coffee">
+		<div class="container">
+			<div class="row d-flex justify-content-center">
+				<div class="menu-content pb-60 col-lg-10">
+					<div class="title text-center">
+						<h1 class="mb-10">What kind of Coffee we serve for you</h1>
+						<p>Who are in extremely love with eco friendly system.</p>
+					</div>
+
+
+					<form method="get">
+						<div class="search-bar d-flex justify-content-between mb-4">
+							<select id="categoryFilter" class="form-select" aria-label="Select category">
+								<option value="All">All Categories</option>
+
+								<option value=""></option>
+
+							</select>
+							<input type="text" id="searchInput" class="form-control" placeholder="Search..." />
+
+
+							<input type="number" class="form-control" placeholder="Min Price" />
+
+
+							<input type="number" class="form-control" placeholder="Max Price" />
+
+							<button class="btn btn-primary" type="submit" id="searchButton">Search</button>
+						</div>
+					</form>
+
+				</div>
+			</div>
+			<div class="row">
+				@foreach (var menu in Model.Menus)
+				{
+					<div class="col-lg-4">
+						<div class="single-menu">
+							<div class="title-div justify-content-between d-flex">
+								<h4>@menu.Name</h4>
+								<p class="price float-right">
+									@menu.Price $
+								</p>
+							</div>
+							<img src="@menu.ImageUrl" alt="@menu.Name" class="img-fluid" />
+							<p>
+								@menu.Description
+							</p>
+							<div class="button-group">
+								<a href="/CoffeApp/AddToCart?MenuId=@menu.MenuId" class="btn btn-primary">Add to Cart</a>
+								<button class="btn btn-secondary wishlist" data-product-id="@menu.MenuId">Add to Wishlist</button>
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</section>
+
+	<!-- End menu Area -->
+	<!-- start footer Area -->
+	@await Html.PartialAsync("Shared/footer")
+	<!-- End footer Area -->
+
+	<script src="~/theme/js/vendor/jquery-2.2.4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="~/theme/js/vendor/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
+	<script src="~/theme/js/easing.min.js"></script>
+	<script src="~/theme/js/hoverIntent.js"></script>
+	<script src="~/theme/js/superfish.min.js"></script>
+	<script src="~/theme/js/jquery.ajaxchimp.min.js"></script>
+	<script src="~/theme/js/jquery.magnific-popup.min.js"></script>
+	<script src="~/theme/js/owl.carousel.min.js"></script>
+	<script src="~/theme/js/jquery.sticky.js"></script>
+	<script src="~/theme/js/jquery.nice-select.min.js"></script>
+	<script src="~/theme/js/parallax.min.js"></script>
+	<script src="~/theme/js/waypoints.min.js"></script>
+	<script src="~/theme/js/jquery.counterup.min.js"></script>
+	<script src="~/theme/js/mail-script.js"></script>
+	<script src="~/theme/js/main.js"></script>
+</body>
+</html>

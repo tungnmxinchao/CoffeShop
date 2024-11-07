@@ -1,0 +1,156 @@
+﻿@page
+@model CoffeShop.Pages.CoffeApp.ViewCartModel
+@{
+}
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="shortcut icon" href="img/fav.png">
+	<meta charset="UTF-8">
+	<title>View Cart</title>
+	<link rel="stylesheet" href="~/theme/css/bootstrap.css">
+	<link rel="stylesheet" href="~/theme/css/main.css">
+</head>
+<body>
+	@await Html.PartialAsync("Shared/Header")
+	<!-- Phần Banner -->
+	@await Html.PartialAsync("Shared/Banner")
+
+@* 	<section class="table-area section-gap">
+		<div class="container">
+			<h3 class="text-center mb-4">Table Status</h3>
+			<div class="tables">
+				@for (int i = 1; i <= 10; i++)
+				{
+					var isAvailable = Model.AvailableTable.Contains(i);
+					<div class="table-item @(isAvailable ? "available" : "occupied")">
+						Table @i
+					</div>
+				}
+			</div>
+		</div>
+	</section> *@
+
+	<!-- Start Cart Area -->
+	<section class="cart-area section-gap">
+		<div class="container">
+			<h2 class="text-center mb-4">Your Shopping Cart</h2>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Menu ID</th>
+						<th>Image</th>
+						<th>Price</th>
+						<th>Quantity</th>
+						<th>Total Price</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					@if (Model.Carts != null && Model.Carts.Count > 0)
+					{
+						foreach (var cart in Model.Carts)
+						{
+							<tr>
+								<td>@cart.MenuId</td>
+								<td>
+									<img src="@cart.Menu.ImageUrl" alt="@cart.Menu.Name" style="width: 50px; height: 50px;" />
+								</td>
+								<td>@cart.Menu.Price $</td>
+								<td>
+									<input type="number" value="@cart.Quantity" min="1" class="form-control" />
+								</td>
+								<td>@(cart.PriceAtAdd) $</td>
+								<td>
+									<a href="/CoffeApp/DeleteCart?MenuId=@cart.MenuId" class="btn btn-danger">Delete</a>
+								</td>
+							</tr>
+						}
+					}
+					else
+					{
+						<tr>
+							<td colspan="6" class="text-center">Your cart is empty.</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+
+			<div class="text-center mb-4">
+				<h4>Total Amount: @Model.TotalCart.ToString("C")</h4>
+			</div>
+
+			<div class="text-center mb-4">
+				<button class="btn btn-primary" id="updateAllButton">Update All</button>
+			</div>
+
+@* 			@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+			{
+				<div class="alert alert-danger">
+					<strong>Error!</strong> @Model.ErrorMessage
+				</div>
+			}
+
+			@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+			{
+				<div class="alert alert-success">
+					<strong>Success!</strong> @Model.SuccessMessage
+				</div>
+			} *@
+
+			<form method="post" asp-page-handler="Checkout" class="form-inline">
+				<input style="display:none" asp-for="@Model.TotalCart" />
+				<div class="form-group mb-2">
+					<label for="tableNumber" class="sr-only">Table Number</label>
+					<input type="text" class="form-control" id="tableNumber" name="tableNumber" placeholder="Table Number" required />
+				</div>
+				<div class="form-group mx-sm-3 mb-2">
+					<label for="phoneNumber" class="sr-only">Phone Number</label>
+					<input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Phone Number" required />
+				</div>
+				<button type="submit" class="btn btn-success mb-2">Checkout</button>
+			</form>
+		</div>
+	</section>
+	<!-- End Cart Area -->
+	<!-- Phần Footer -->
+	@await Html.PartialAsync("Shared/footer")
+
+	<script src="~/theme/js/vendor/jquery-2.2.4.min.js"></script>
+	<script src="~/theme/js/vendor/bootstrap.min.js"></script>
+	<script src="~/theme/js/main.js"></script>
+
+	<script>
+		document.getElementById('updateAllButton').addEventListener('click', function () {
+
+			const inputs = document.querySelectorAll('input.form-control');
+			const quantities = Array.from(inputs)
+				.map(input => input.value)
+				.filter(value => value.trim() !== "")
+				.join(',');
+
+
+			if (quantities === "") {
+				alert("Please enter at least one quantity.");
+				return;
+			}
+
+
+			const form = document.createElement('form');
+			form.method = 'GET';
+			form.action = '/CoffeApp/UpdateCart';
+
+			const hiddenInput = document.createElement('input');
+			hiddenInput.type = 'hidden';
+			hiddenInput.name = 'Quantities';
+			hiddenInput.value = quantities;
+
+			form.appendChild(hiddenInput);
+			document.body.appendChild(form);
+			form.submit();
+		});
+	</script>
+
+</body>
+</html>

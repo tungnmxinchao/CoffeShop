@@ -1,10 +1,17 @@
+
 using CoffeShop.Models;
+using CoffeShop.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<CoffeShopContext>();
+
+
+builder.Services.AddScoped<MenuService>();
+builder.Services.AddScoped<CartService>();
+
 
 var app = builder.Build();
 
@@ -24,5 +31,10 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+app.MapGet("/", async context =>
+{
+	context.Response.Redirect("/CoffeApp/Home");
+});
 
 app.Run();
