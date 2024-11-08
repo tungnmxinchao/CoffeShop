@@ -14,6 +14,8 @@ builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<TableService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<IngredientService>();
+builder.Services.AddScoped<InventoryService>();
 
 
 var app = builder.Build();

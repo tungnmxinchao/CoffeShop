@@ -13,14 +13,19 @@ namespace CoffeShop.Pages.CoffeApp
 		private readonly TableService tableService;
 		private readonly UserService userService;
 		private readonly OrderService orderService;
+		private readonly IngredientService ingredientService;
+		private readonly InventoryService inventoryService;
 
 		public ViewCartModel(CartService cartServicem, TableService tableService,
-			UserService userService, OrderService orderService)
+			UserService userService, OrderService orderService, IngredientService ingredientService,
+			InventoryService inventoryService)
 		{
 			this.cartService = cartServicem;
 			this.tableService = tableService;
 			this.userService = userService;
 			this.orderService = orderService;
+			this.ingredientService = ingredientService;
+			this.inventoryService = inventoryService;
 		}
 
 		public List<Cart> Carts { get; set; }
@@ -91,6 +96,11 @@ namespace CoffeShop.Pages.CoffeApp
 
 			if (orderService.CreateOrder(order))
 			{
+				if (!UpdateInventoryBasedOnOrder(cart))
+				{
+					return Page();
+				}
+
 				SuccessMessage = "Order Successfully!";
 				return Page();
 
@@ -111,6 +121,32 @@ namespace CoffeShop.Pages.CoffeApp
 			Tables = tableService.FindAllTable();
 
 			User = userService.FindUserById(1);
+		}
+
+		private bool UpdateInventoryBasedOnOrder(List<Cart> cart)
+		{
+			foreach (var cartItem in cart)
+			{
+				var ingredients = ingredientService.FindIngredientsByMenuId(cartItem.MenuId);
+
+				foreach (var ingredient in ingredients)
+				{
+					decimal totalQuantityNeeded = (ingredient.QuantityPerProduct.GetValueOrDefault() * cartItem.Quantity) / 1000m;
+
+					var inventoryItem = inventoryService.GetInventoryItem(ingredient.ItemId.GetValueOrDefault());
+					if (inventoryItem != null && inventoryItem.Quantity >= totalQuantityNeeded)
+					{
+						inventoryItem.Quantity -= totalQuantityNeeded;
+						inventoryService.UpdateInventory(inventoryItem);
+					}
+					else
+					{
+						ErrorMessage = $"Not enough {inventoryItem?.Name} in inventory.";
+						return false;
+					}
+				}
+			}
+			return true;
 		}
 
 	}
