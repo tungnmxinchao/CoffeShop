@@ -73,6 +73,11 @@ namespace CoffeShop.Pages.CoffeApp
 				return Page();
 			}
 
+			if (!ValidateInventoryForCart(cart))
+			{
+				return Page();
+			}
+
 			var order = new Order
 			{
 				UserId = 1,
@@ -122,6 +127,27 @@ namespace CoffeShop.Pages.CoffeApp
 
 			User = userService.FindUserById(1);
 		}
+		private bool ValidateInventoryForCart(List<Cart> cart)
+		{
+			foreach (var cartItem in cart)
+			{
+				var ingredients = ingredientService.FindIngredientsByMenuId(cartItem.MenuId);
+
+				foreach (var ingredient in ingredients)
+				{
+					decimal totalQuantityNeeded = (ingredient.QuantityPerProduct.GetValueOrDefault() * cartItem.Quantity) / 1000m;
+					var inventoryItem = inventoryService.GetInventoryItem(ingredient.ItemId.GetValueOrDefault());
+
+					if (inventoryItem == null || inventoryItem.Quantity < totalQuantityNeeded)
+					{
+						ErrorMessage = cartItem.Menu.Name + "not enough inventory to order!";
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
 
 		private bool UpdateInventoryBasedOnOrder(List<Cart> cart)
 		{
