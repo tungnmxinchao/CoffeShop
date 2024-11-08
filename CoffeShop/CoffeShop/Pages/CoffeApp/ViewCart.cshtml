@@ -17,20 +17,32 @@
 	<!-- Phần Banner -->
 	@await Html.PartialAsync("Shared/Banner")
 
-@* 	<section class="table-area section-gap">
+	<section class="table-status section-gap">
 		<div class="container">
-			<h3 class="text-center mb-4">Table Status</h3>
-			<div class="tables">
-				@for (int i = 1; i <= 10; i++)
+			<h2 class="text-center mb-4">Table Status</h2>
+			<div class="row">
+				@if (Model.Tables != null && Model.Tables.Count > 0)
 				{
-					var isAvailable = Model.AvailableTable.Contains(i);
-					<div class="table-item @(isAvailable ? "available" : "occupied")">
-						Table @i
-					</div>
+					foreach (var table in Model.Tables)
+					{
+						<div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+							<div class="card text-center table-card @(table.Status?.ToLower())">
+								<div class="card-body">
+									<h5 class="card-title">Table @table.TableId</h5>
+									<p class="card-text">@table.Status</p>
+								</div>
+							</div>
+						</div>
+					}
+				}
+				else
+				{
+					<p class="text-center">No tables available.</p>
 				}
 			</div>
 		</div>
-	</section> *@
+	</section>
+
 
 	<!-- Start Cart Area -->
 	<section class="cart-area section-gap">
@@ -59,7 +71,7 @@
 								</td>
 								<td>@cart.Menu.Price $</td>
 								<td>
-									<input type="number" value="@cart.Quantity" min="1" class="form-control" />
+									<input type="number" value="@cart.Quantity" min="1" class="form-control quantities" />
 								</td>
 								<td>@(cart.PriceAtAdd) $</td>
 								<td>
@@ -85,32 +97,58 @@
 				<button class="btn btn-primary" id="updateAllButton">Update All</button>
 			</div>
 
-@* 			@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+						@if (!string.IsNullOrEmpty(Model.ErrorMessage))
 			{
-				<div class="alert alert-danger">
-					<strong>Error!</strong> @Model.ErrorMessage
-				</div>
+			<div class="alert alert-danger">
+			<strong>Error!</strong> @Model.ErrorMessage
+			</div>
 			}
 
 			@if (!string.IsNullOrEmpty(Model.SuccessMessage))
 			{
-				<div class="alert alert-success">
-					<strong>Success!</strong> @Model.SuccessMessage
-				</div>
-			} *@
+			<div class="alert alert-success">
+			<strong>Success!</strong> @Model.SuccessMessage
+			</div>
+			}
 
-			<form method="post" asp-page-handler="Checkout" class="form-inline">
-				<input style="display:none" asp-for="@Model.TotalCart" />
-				<div class="form-group mb-2">
-					<label for="tableNumber" class="sr-only">Table Number</label>
-					<input type="text" class="form-control" id="tableNumber" name="tableNumber" placeholder="Table Number" required />
+			<form method="post" asp-page-handler="Checkout" class="p-4 border rounded">
+				<div class="form-row mb-3">
+					<div class="col">
+						<label for="fullName" class="font-weight-bold">Full Name</label>
+						<input type="text" readonly class="form-control" asp-for="@Model.User.UserId" placeholder="Enter your full name" style="display:none" />
+						<input type="text" readonly class="form-control" asp-for="@Model.User.FullName" placeholder="Enter your full name" required />
+					</div>
 				</div>
-				<div class="form-group mx-sm-3 mb-2">
-					<label for="phoneNumber" class="sr-only">Phone Number</label>
-					<input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Phone Number" required />
+
+				<div class="form-row mb-3">
+					<div class="col">
+						<label for="phoneNumber" class="font-weight-bold">Phone Number</label>
+						<input type="text" readonly class="form-control" asp-for="@Model.User.Phone" placeholder="Enter your phone number" required />
+					</div>
 				</div>
-				<button type="submit" class="btn btn-success mb-2">Checkout</button>
+
+				<div class="form-row mb-3">
+					<div class="col">
+						<label for="tableNumber" class="font-weight-bold">Table Number</label>
+						<input type="number" class="form-control" asp-for="@Model.TableNumber" placeholder="Enter table number" required />
+					</div>
+				</div>
+
+				<div class="form-row mb-3">
+					<div class="col">
+						<label for="totalAmount" class="font-weight-bold">Total Amount</label>
+						
+						<input type="text" class="form-control" asp-for="@Model.TotalCart"  readonly />
+					</div>
+				</div>
+
+				<div class="text-center">
+					<button type="submit" class="btn btn-success mt-3">Checkout</button>
+				</div>
 			</form>
+
+
+
 		</div>
 	</section>
 	<!-- End Cart Area -->
@@ -124,7 +162,7 @@
 	<script>
 		document.getElementById('updateAllButton').addEventListener('click', function () {
 
-			const inputs = document.querySelectorAll('input.form-control');
+			const inputs = document.querySelectorAll('input.form-control.quantities');
 			const quantities = Array.from(inputs)
 				.map(input => input.value)
 				.filter(value => value.trim() !== "")

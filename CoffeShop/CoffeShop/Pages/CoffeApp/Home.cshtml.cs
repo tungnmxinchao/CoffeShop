@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CoffeShop.Pages.CoffeApp
 {
-    public class HomeModel : PageModel
-    {
-        private readonly MenuService menuService;
+	public class HomeModel : PageModel
+	{
+		private readonly MenuService menuService;
 
 		public HomeModel(MenuService menuService)
 		{
@@ -15,12 +15,12 @@ namespace CoffeShop.Pages.CoffeApp
 		}
 
 		public List<Menu> Menus { get; set; }
-        public IActionResult OnGet()
-        {
+		public IActionResult OnGet()
+		{
 			Menus = menuService.FindAll();
 
 			return Page();
 
 		}
-    }
+	}
 }

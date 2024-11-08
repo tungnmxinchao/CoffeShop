@@ -12,7 +12,7 @@ namespace CoffeShop.Models
 
         public int ItemId { get; set; }
         public string? Name { get; set; }
-        public int? Quantity { get; set; }
+        public decimal? Quantity { get; set; }
         public string? Unit { get; set; }
         public DateTime? LastRestocked { get; set; }
         public int? MinimumQuantity { get; set; }

@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CoffeShop.Pages.CoffeApp
 {
-    public class AddToCartModel : PageModel
-    {
+	public class AddToCartModel : PageModel
+	{
 
-        private readonly CartService cartService;
+		private readonly CartService cartService;
 
 		public AddToCartModel(CartService cartService)
 		{
@@ -16,14 +16,14 @@ namespace CoffeShop.Pages.CoffeApp
 		}
 
 		[BindProperty(SupportsGet = true)]
-        public int MenuId { get; set; }
+		public int MenuId { get; set; }
 
 		public IActionResult OnGet()
-        {
+		{
 			cartService.AddToCart(MenuId, 1);
 
 			return RedirectToPage("/CoffeApp/ViewCart");
 
 		}
-    }
+	}
 }

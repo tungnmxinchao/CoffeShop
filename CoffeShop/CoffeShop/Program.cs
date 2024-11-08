@@ -11,6 +11,9 @@ builder.Services.AddDbContext<CoffeShopContext>();
 
 builder.Services.AddScoped<MenuService>();
 builder.Services.AddScoped<CartService>();
+builder.Services.AddScoped<TableService>();
+builder.Services.AddScoped<OrderService>();
+builder.Services.AddScoped<UserService>();
 
 
 var app = builder.Build();

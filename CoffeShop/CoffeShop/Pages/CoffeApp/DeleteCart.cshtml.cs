@@ -4,22 +4,22 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CoffeShop.Pages.CoffeApp
 {
-    public class DeleteCartModel : PageModel
-    {
-        private readonly CartService cartService;
+	public class DeleteCartModel : PageModel
+	{
+		private readonly CartService cartService;
 
 		public DeleteCartModel(CartService cartService)
 		{
 			this.cartService = cartService;
 		}
 
-        [BindProperty(SupportsGet = true)]
-        public int MenuId { get; set; }
+		[BindProperty(SupportsGet = true)]
+		public int MenuId { get; set; }
 
 		public IActionResult OnGet()
-        {
+		{
 			int[] ArrayMenuId = new int[] { MenuId };
-			if(cartService.RemoveCart(1, ArrayMenuId))
+			if (cartService.RemoveCart(1, ArrayMenuId))
 			{
 				return RedirectToPage("/CoffeApp/ViewCart");
 			}
@@ -27,5 +27,5 @@ namespace CoffeShop.Pages.CoffeApp
 			return Page();
 
 		}
-    }
+	}
 }

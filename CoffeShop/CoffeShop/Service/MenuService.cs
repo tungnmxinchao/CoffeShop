@@ -13,7 +13,7 @@ namespace CoffeShop.Service
 		{
 			var menu = CoffeShopContext.Ins.Menus.Find(id);
 
-			if(menu == null)
+			if (menu == null)
 			{
 				throw new Exception("ID product not found");
 			}

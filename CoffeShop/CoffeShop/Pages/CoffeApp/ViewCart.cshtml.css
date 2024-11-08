@@ -1,0 +1,19 @@
+﻿/* Style for the table cards */
+.table-card {
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+    .table-card.available {
+        background-color: #28a745; /* Green */
+    }
+
+    .table-card.reserved {
+        background-color: #ffc107; /* Yellow */
+    }
+
+    .table-card.occupied {
+        background-color: #dc3545; /* Red */
+    }

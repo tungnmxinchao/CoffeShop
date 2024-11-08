@@ -11,8 +11,7 @@ namespace CoffeShop.Models
 		public CoffeShopContext()
         {
 			if (Ins == null) Ins = this;
-			
-        }
+		}
 
         public CoffeShopContext(DbContextOptions<CoffeShopContext> options)
             : base(options)
@@ -111,7 +110,9 @@ namespace CoffeShop.Models
                     .HasColumnType("decimal(10, 2)")
                     .HasColumnName("price");
 
-                entity.Property(e => e.Quantity).HasColumnName("quantity");
+                entity.Property(e => e.Quantity)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasColumnName("quantity");
 
                 entity.Property(e => e.Unit)
                     .HasMaxLength(50)
