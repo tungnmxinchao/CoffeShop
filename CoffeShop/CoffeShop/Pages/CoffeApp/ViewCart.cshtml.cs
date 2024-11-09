@@ -140,6 +140,7 @@ namespace CoffeShop.Pages.CoffeApp
 					return Page();
 				}
 				table.Status = "Reserved";
+				table.ReservationTime = ServiceDateTime;
 				tableService.UpdateTable(table);
 
 				userService.AddLoyaltyPoints(1, 1);
