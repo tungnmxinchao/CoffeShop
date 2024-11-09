@@ -15,10 +15,11 @@ namespace CoffeShop.Pages.CoffeApp
 		private readonly OrderService orderService;
 		private readonly IngredientService ingredientService;
 		private readonly InventoryService inventoryService;
+		private readonly EmailService emailService;
 
 		public ViewCartModel(CartService cartServicem, TableService tableService,
 			UserService userService, OrderService orderService, IngredientService ingredientService,
-			InventoryService inventoryService)
+			InventoryService inventoryService, EmailService emailService)
 		{
 			this.cartService = cartServicem;
 			this.tableService = tableService;
@@ -26,6 +27,7 @@ namespace CoffeShop.Pages.CoffeApp
 			this.orderService = orderService;
 			this.ingredientService = ingredientService;
 			this.inventoryService = inventoryService;
+			this.emailService = emailService;
 		}
 
 		public List<Cart> Carts { get; set; }
@@ -145,6 +147,9 @@ namespace CoffeShop.Pages.CoffeApp
 
 				userService.AddLoyaltyPoints(1, 1);
 				SuccessMessage = "Order placed successfully!";
+
+				var user = userService.FindUserById(1);
+				Task.Run(() => emailService.SendOrderConfirmationEmail(user.Email, user.FullName, order));
 				return Page();
 			}
 			else
