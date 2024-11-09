@@ -139,6 +139,8 @@ namespace CoffeShop.Pages.CoffeApp
 				{
 					return Page();
 				}
+				table.Status = "Reserved";
+				tableService.UpdateTable(table);
 
 				userService.AddLoyaltyPoints(1, 1);
 				SuccessMessage = "Order placed successfully!";
