@@ -18,10 +18,11 @@ namespace CoffeShop.Pages.CoffeApp
 
 		public IActionResult OnGet()
 		{
+			var userId = HttpContext.Session.GetInt32("UserId");
 
 			string[] ArrayQuantiies = Quantities.Split(',');
 
-			var Carts = cartService.FindAllCartByUserId(1);
+			var Carts = cartService.FindAllCartByUserId(userId);
 
 			if (cartService.UpdateCart(Carts, ArrayQuantiies))
 			{

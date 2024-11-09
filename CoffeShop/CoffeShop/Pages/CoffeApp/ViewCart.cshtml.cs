@@ -1,4 +1,5 @@
 
+using CoffeShop.Filter;
 using CoffeShop.Models;
 using CoffeShop.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -65,6 +66,13 @@ namespace CoffeShop.Pages.CoffeApp
 
 		public IActionResult OnPostCheckOut()
 		{
+			var userId = HttpContext.Session.GetInt32("UserId");
+
+			if(userId == null)
+			{
+				return RedirectToPage("/CoffeApp/Login");
+			}
+
 			LoadInforCartPage();
 			var table = tableService.GetTable(TableNumber);
 
@@ -87,7 +95,7 @@ namespace CoffeShop.Pages.CoffeApp
 			}
 
 
-			var cart = cartService.FindAllCartByUserId(1);
+			var cart = cartService.FindAllCartByUserId(userId);
 			if (cart == null || cart.Count == 0)
 			{
 				ErrorMessage = "Your cart is empty. Please add items to your cart.";
@@ -102,7 +110,7 @@ namespace CoffeShop.Pages.CoffeApp
 			decimal discount = 0;
 			if (UseLoyaltyPoints && PointsToRedeem.HasValue)
 			{
-				var user = userService.FindUserById(1);
+				var user = userService.FindUserById(userId);
 
 				if (user.Poins < PointsToRedeem.Value)
 				{
@@ -128,7 +136,7 @@ namespace CoffeShop.Pages.CoffeApp
 
 			var order = new Order
 			{
-				UserId = 1,
+				UserId = userId,
 				TableId = TableNumber,
 				Status = "Confirmed",
 				TotalPrice = TotalCart,
@@ -158,10 +166,10 @@ namespace CoffeShop.Pages.CoffeApp
 				table.ReservationTime = ServiceDateTime;
 				tableService.UpdateTable(table);
 
-				userService.AddLoyaltyPoints(1, 1);
+				userService.AddLoyaltyPoints(userId, 1);
 				SuccessMessage = "Order placed successfully!";
 
-				var user = userService.FindUserById(1);
+				var user = userService.FindUserById(userId);
 				Task.Run(() => emailService.SendOrderConfirmationEmail(user.Email, user.FullName, order));
 
 				CheckInventoryAndNotifyStaff(cart, table.Waiter);
@@ -179,13 +187,23 @@ namespace CoffeShop.Pages.CoffeApp
 
 		private void LoadInforCartPage()
 		{
-			Carts = cartService.FindAllCartByUserId(1);
+			int? userId = HttpContext.Session.GetInt32("UserId");
+
+			Carts = cartService.FindAllCartByUserId(userId);
 
 			TotalCart = Carts.Sum(cart => cart.PriceAtAdd);
 
 			Tables = tableService.FindAllTable();
 
-			User = userService.FindUserById(1);
+			if (userId != null)
+			{
+				User = userService.FindUserById(userId);
+			}
+			else
+			{
+				User = null;
+			}
+			
 		}
 		private bool ValidateInventoryForCart(List<Cart> cart)
 		{

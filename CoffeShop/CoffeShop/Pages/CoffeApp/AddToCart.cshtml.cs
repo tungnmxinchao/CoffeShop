@@ -1,3 +1,4 @@
+using CoffeShop.Filter;
 using CoffeShop.Models;
 using CoffeShop.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CoffeShop.Pages.CoffeApp
 {
+	[RequireUser]
 	public class AddToCartModel : PageModel
 	{
 
@@ -20,7 +22,9 @@ namespace CoffeShop.Pages.CoffeApp
 
 		public IActionResult OnGet()
 		{
-			cartService.AddToCart(MenuId, 1);
+			var userId = HttpContext.Session.GetInt32("UserId");
+
+			cartService.AddToCart(MenuId, 1 , userId);
 
 			return RedirectToPage("/CoffeApp/ViewCart");
 

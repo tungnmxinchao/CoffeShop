@@ -5,13 +5,14 @@ namespace CoffeShop.Service
 	public class CartService
 	{
 
-		public List<Cart> FindAllCartByUserId(int userId)
+		public List<Cart> FindAllCartByUserId(int? userId)
 		{
 			return CoffeShopContext.Ins.Carts.Where(x => x.UserId == userId).ToList();
 		}
 
-		public bool AddToCart(int idMenu, int quantity)
+		public bool AddToCart(int idMenu, int quantity, int? userId)
 		{
+
 			var menu = CoffeShopContext.Ins.Menus.Find(idMenu);
 
 			if (menu == null)
@@ -20,13 +21,13 @@ namespace CoffeShop.Service
 			}
 
 			var menuInCart = CoffeShopContext.Ins.Carts
-				.FirstOrDefault(x => x.MenuId == idMenu);
+				.FirstOrDefault(x => x.MenuId == idMenu && x.UserId == userId);
 
 			if (menuInCart == null)
 			{
 				Cart cart = new Cart
 				{
-					UserId = 1,
+					UserId = userId.Value,
 					MenuId = idMenu,
 					Quantity = quantity,
 					PriceAtAdd = (decimal)(menu.Price * quantity)
@@ -105,7 +106,7 @@ namespace CoffeShop.Service
 			}
 		}
 
-		public bool RemoveCart(int userId, int[] idMenus)
+		public bool RemoveCart(int? userId, int[] idMenus)
 		{
 			try
 			{

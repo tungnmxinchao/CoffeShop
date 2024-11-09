@@ -18,8 +18,10 @@ namespace CoffeShop.Pages.CoffeApp
 
 		public IActionResult OnGet()
 		{
+			var userId = HttpContext.Session.GetInt32("UserId");
+
 			int[] ArrayMenuId = new int[] { MenuId };
-			if (cartService.RemoveCart(1, ArrayMenuId))
+			if (cartService.RemoveCart(userId, ArrayMenuId))
 			{
 				return RedirectToPage("/CoffeApp/ViewCart");
 			}

@@ -17,7 +17,7 @@ namespace CoffeShop.Service
 			return user;
 		}
 
-		public void AddLoyaltyPoints(int userId, int pointsToAdd)
+		public void AddLoyaltyPoints(int? userId, int pointsToAdd)
 		{
 			var user = CoffeShopContext.Ins.Users.Find(userId);
 
