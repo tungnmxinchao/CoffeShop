@@ -19,7 +19,8 @@ namespace CoffeShop.Service
 				return false;
 			}
 
-			var menuInCart = CoffeShopContext.Ins.Carts.Find(idMenu);
+			var menuInCart = CoffeShopContext.Ins.Carts
+				.FirstOrDefault(x => x.MenuId == idMenu);
 
 			if (menuInCart == null)
 			{

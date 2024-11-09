@@ -150,6 +150,10 @@ namespace CoffeShop.Pages.CoffeApp
 
 				var user = userService.FindUserById(1);
 				Task.Run(() => emailService.SendOrderConfirmationEmail(user.Email, user.FullName, order));
+
+				CheckInventoryAndNotifyStaff(cart , table.Waiter);
+
+
 				return Page();
 			}
 			else
@@ -216,6 +220,32 @@ namespace CoffeShop.Pages.CoffeApp
 				}
 			}
 			return true;
+		}
+
+		private void CheckInventoryAndNotifyStaff(List<Cart> cart, int? staffId)
+		{
+			List<string> lowInventoryItems = new List<string>();
+
+			foreach (var cartItem in cart)
+			{
+				var ingredients = ingredientService.FindIngredientsByMenuId(cartItem.MenuId);
+
+				foreach (var ingredient in ingredients)
+				{
+					var inventoryItem = inventoryService.GetInventoryItem(ingredient.ItemId.GetValueOrDefault());
+
+					if (inventoryItem != null && inventoryItem.Quantity <= inventoryItem.MinimumQuantity.GetValueOrDefault())
+					{
+						lowInventoryItems.Add($"{inventoryItem.Name} (Required: {ingredient.QuantityPerProduct * cartItem.Quantity / 1000m} units)");
+					}
+				}
+			}
+
+			if (lowInventoryItems.Any())
+			{
+				var staff = userService.FindUserById(staffId);
+				Task.Run(() => emailService.SendLowInventoryNotification(lowInventoryItems, staff.Email));
+			}
 		}
 
 	}

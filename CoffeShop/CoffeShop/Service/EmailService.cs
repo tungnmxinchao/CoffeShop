@@ -39,6 +39,29 @@ namespace CoffeShop.Service
 			}
 		}
 
+		public async Task SendLowInventoryNotification(List<string> lowInventoryItems, string staffEmail)
+		{
+			var smtpServer = _config["EmailSettings:SmtpServer"];
+			var port = int.Parse(_config["EmailSettings:Port"]);
+			var senderEmail = _config["EmailSettings:SenderEmail"];
+			var senderName = _config["EmailSettings:SenderName"];
+			var password = _config["EmailSettings:Password"];
+
+			var message = new MailMessage();
+			message.From = new MailAddress(senderEmail, senderName);
+			message.To.Add(new MailAddress(staffEmail));
+			message.Subject = "Low Inventory Notification";
+			message.IsBodyHtml = true;
+			message.Body = GenerateLowInventoryEmailBody(lowInventoryItems);
+
+			using (var client = new SmtpClient(smtpServer, port))
+			{
+				client.Credentials = new NetworkCredential(senderEmail, password);
+				client.EnableSsl = true;
+				await client.SendMailAsync(message);
+			}
+		}
+
 		private string GenerateEmailBody(string userName, Order order)
 		{
 			var items = string.Join("<br>", order.OrderDetails.Select(
@@ -52,6 +75,20 @@ namespace CoffeShop.Service
                 <h4>Order Details:</h4>
                 <p>{items}</p>
                 <p>We hope you enjoy your meal!</p>
+            ";
+		}
+
+		private string GenerateLowInventoryEmailBody(List<string> lowInventoryItems)
+		{
+			var itemsList = string.Join("<br>", lowInventoryItems);
+
+			return $@"
+                <h2>Urgent: Low Inventory Notification</h2>
+                <p>The following items have low inventory levels:</p>
+                <ul>
+                    {string.Join("", lowInventoryItems.Select(item => $"<li>{item}</li>"))}
+                </ul>
+                <p>Please restock these items as soon as possible.</p>
             ";
 		}
 	}

@@ -5,7 +5,7 @@ namespace CoffeShop.Service
 	public class UserService
 	{
 
-		public User FindUserById(int id)
+		public User FindUserById(int? id)
 		{
 			var user = CoffeShopContext.Ins.Users.Find(id);
 
