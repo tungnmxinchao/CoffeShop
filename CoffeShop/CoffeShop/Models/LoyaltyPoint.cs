@@ -7,8 +7,8 @@ namespace CoffeShop.Models
     {
         public int UserId { get; set; }
         public int? Points { get; set; }
-		public int? PointsUsed { get; set; }
+        public int? PointsUsed { get; set; }
 
-		public virtual User User { get; set; } = null!;
+        public virtual User User { get; set; } = null!;
     }
 }

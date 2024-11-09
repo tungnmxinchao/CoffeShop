@@ -7,6 +7,7 @@ namespace CoffeShop.Models
     {
         public Table()
         {
+            Feedbacks = new HashSet<Feedback>();
             Orders = new HashSet<Order>();
         }
 
@@ -15,7 +16,10 @@ namespace CoffeShop.Models
         public int? Capacity { get; set; }
         public string? Location { get; set; }
         public DateTime? ReservationTime { get; set; }
+        public int? Waiter { get; set; }
 
+        public virtual User? WaiterNavigation { get; set; }
+        public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
     }
 }

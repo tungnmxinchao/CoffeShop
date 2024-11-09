@@ -10,8 +10,8 @@ namespace CoffeShop.Models
         public static CoffeShopContext Ins = new CoffeShopContext();
 		public CoffeShopContext()
         {
-			if (Ins == null) Ins = this;
-		}
+            if (Ins == null) Ins = this;
+        }
 
         public CoffeShopContext(DbContextOptions<CoffeShopContext> options)
             : base(options)
@@ -20,6 +20,7 @@ namespace CoffeShop.Models
 
         public virtual DbSet<Cart> Carts { get; set; } = null!;
         public virtual DbSet<Category> Categories { get; set; } = null!;
+        public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
         public virtual DbSet<Inventory> Inventories { get; set; } = null!;
         public virtual DbSet<LoyaltyPoint> LoyaltyPoints { get; set; } = null!;
         public virtual DbSet<Menu> Menus { get; set; } = null!;
@@ -87,6 +88,53 @@ namespace CoffeShop.Models
                     .HasColumnName("name");
             });
 
+            modelBuilder.Entity<Feedback>(entity =>
+            {
+                entity.ToTable("Feedback");
+
+                entity.Property(e => e.FeedbackId).HasColumnName("feedback_id");
+
+                entity.Property(e => e.Cause)
+                    .HasMaxLength(50)
+                    .HasColumnName("cause");
+
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("created_at")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.FeedbackContent).HasColumnName("feedback_content");
+
+                entity.Property(e => e.FeedbackOption)
+                    .HasMaxLength(255)
+                    .HasColumnName("feedback_option");
+
+                entity.Property(e => e.Status)
+                    .HasMaxLength(50)
+                    .HasColumnName("status");
+
+                entity.Property(e => e.TableId).HasColumnName("table_id");
+
+                entity.Property(e => e.UpdatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("updated_at")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.Table)
+                    .WithMany(p => p.Feedbacks)
+                    .HasForeignKey(d => d.TableId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Feedback__table___1CBC4616");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Feedbacks)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Feedback__user_i__1DB06A4F");
+            });
+
             modelBuilder.Entity<Inventory>(entity =>
             {
                 entity.HasKey(e => e.ItemId)
@@ -132,6 +180,8 @@ namespace CoffeShop.Models
                     .HasColumnName("points")
                     .HasDefaultValueSql("((0))");
 
+                entity.Property(e => e.PointsUsed).HasDefaultValueSql("((0))");
+
                 entity.HasOne(d => d.User)
                     .WithOne(p => p.LoyaltyPoint)
                     .HasForeignKey<LoyaltyPoint>(d => d.UserId)
@@ -176,6 +226,8 @@ namespace CoffeShop.Models
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("created_at");
+
+                entity.Property(e => e.PointsUsed).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Status)
                     .HasMaxLength(50)
@@ -286,6 +338,13 @@ namespace CoffeShop.Models
                 entity.Property(e => e.Status)
                     .HasMaxLength(50)
                     .HasColumnName("status");
+
+                entity.Property(e => e.Waiter).HasColumnName("waiter");
+
+                entity.HasOne(d => d.WaiterNavigation)
+                    .WithMany(p => p.Tables)
+                    .HasForeignKey(d => d.Waiter)
+                    .HasConstraintName("FK_Tables_Users");
             });
 
             modelBuilder.Entity<User>(entity =>

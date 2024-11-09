@@ -8,7 +8,9 @@ namespace CoffeShop.Models
         public User()
         {
             Carts = new HashSet<Cart>();
+            Feedbacks = new HashSet<Feedback>();
             Orders = new HashSet<Order>();
+            Tables = new HashSet<Table>();
         }
 
         public int UserId { get; set; }
@@ -22,6 +24,8 @@ namespace CoffeShop.Models
 
         public virtual LoyaltyPoint? LoyaltyPoint { get; set; }
         public virtual ICollection<Cart> Carts { get; set; }
+        public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Table> Tables { get; set; }
     }
 }

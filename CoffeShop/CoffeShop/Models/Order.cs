@@ -16,6 +16,7 @@ namespace CoffeShop.Models
         public string? Status { get; set; }
         public decimal? TotalPrice { get; set; }
         public DateTime? CreatedAt { get; set; }
+        public int? PointsUsed { get; set; }
 
         public virtual Table? Table { get; set; }
         public virtual User? User { get; set; }

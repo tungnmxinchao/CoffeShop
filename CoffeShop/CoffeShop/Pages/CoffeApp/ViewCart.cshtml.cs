@@ -84,7 +84,8 @@ namespace CoffeShop.Pages.CoffeApp
 				TableId = TableNumber,
 				Status = "Pending",
 				TotalPrice = TotalCart,
-				CreatedAt = DateTime.Now
+				CreatedAt = DateTime.Now,
+				PointsUsed = 0,
 			};
 
 			foreach (var cartItem in cart)
