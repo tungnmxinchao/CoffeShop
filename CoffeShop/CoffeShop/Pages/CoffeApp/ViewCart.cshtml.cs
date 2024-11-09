@@ -105,7 +105,7 @@ namespace CoffeShop.Pages.CoffeApp
 
 
 				user.Poins -= PointsToRedeem.Value;
-				user.PoinsUsed = PointsToRedeem.Value;
+				user.PoinsUsed += PointsToRedeem.Value;
 				userService.UpdateUser(user);
 			}
 
