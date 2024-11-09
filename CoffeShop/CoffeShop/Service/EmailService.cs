@@ -2,7 +2,7 @@
 using System.Net.Mail;
 using CoffeShop.Models;
 using Microsoft.Extensions.Configuration;
-using System.Threading.Tasks; 
+using System.Threading.Tasks;
 
 namespace CoffeShop.Service
 {
@@ -35,7 +35,7 @@ namespace CoffeShop.Service
 			{
 				client.Credentials = new NetworkCredential(senderEmail, password);
 				client.EnableSsl = true;
-				await client.SendMailAsync(message);  
+				await client.SendMailAsync(message);
 			}
 		}
 

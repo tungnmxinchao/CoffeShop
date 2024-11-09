@@ -23,6 +23,7 @@ namespace CoffeShop.Models
         public DateTime? CreatedAt { get; set; }
         public int? Poins { get; set; }
         public int? PoinsUsed { get; set; }
+        public string? Status { get; set; }
 
         public virtual ICollection<Cart> Carts { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }

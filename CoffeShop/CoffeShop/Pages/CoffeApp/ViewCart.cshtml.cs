@@ -52,7 +52,7 @@ namespace CoffeShop.Pages.CoffeApp
 		[BindProperty]
 		public int? PointsToRedeem { get; set; }
 		[BindProperty]
-		public DateTime ServiceDateTime {  get; set; }
+		public DateTime ServiceDateTime { get; set; }
 
 
 
@@ -115,7 +115,7 @@ namespace CoffeShop.Pages.CoffeApp
 				if (discount > TotalCart)
 				{
 					discount = TotalCart;
-					PointsToRedeem = (int)(TotalCart / 0.2m); 
+					PointsToRedeem = (int)(TotalCart / 0.2m);
 				}
 
 
@@ -164,7 +164,7 @@ namespace CoffeShop.Pages.CoffeApp
 				var user = userService.FindUserById(1);
 				Task.Run(() => emailService.SendOrderConfirmationEmail(user.Email, user.FullName, order));
 
-				CheckInventoryAndNotifyStaff(cart , table.Waiter);
+				CheckInventoryAndNotifyStaff(cart, table.Waiter);
 
 
 				return Page();

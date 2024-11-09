@@ -7,12 +7,11 @@ namespace CoffeShop.Models
 {
     public partial class CoffeShopContext : DbContext
     {
-
         public static CoffeShopContext Ins = new CoffeShopContext();
 		public CoffeShopContext()
         {
-            if (Ins == null) Ins = this;
-        }
+			if (Ins == null) Ins = this;
+		}
 
         public CoffeShopContext(DbContextOptions<CoffeShopContext> options)
             : base(options)
@@ -346,6 +345,11 @@ namespace CoffeShop.Models
                 entity.Property(e => e.Role)
                     .HasMaxLength(50)
                     .HasColumnName("role");
+
+                entity.Property(e => e.Status)
+                    .HasMaxLength(10)
+                    .HasColumnName("status")
+                    .HasDefaultValueSql("('Active')");
 
                 entity.Property(e => e.Username)
                     .HasMaxLength(50)
