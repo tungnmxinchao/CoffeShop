@@ -74,6 +74,19 @@ namespace CoffeShop.Pages.CoffeApp
 				return Page();
 			}
 
+			if (ServiceDateTime < DateTime.Now)
+			{
+				ErrorMessage = "Service date and time cannot be in the past.";
+				return Page();
+			}
+
+			if (ServiceDateTime.Hour < 6 || ServiceDateTime.Hour >= 22)
+			{
+				ErrorMessage = "Service time must be between 6 AM and 10 PM.";
+				return Page();
+			}
+
+
 			var cart = cartService.FindAllCartByUserId(1);
 			if (cart == null || cart.Count == 0)
 			{
