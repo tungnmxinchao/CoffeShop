@@ -1,0 +1,66 @@
+﻿@page
+@model CoffeShop.Pages.CoffeApp.RegisterModel
+@{
+}
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="shortcut icon" href="img/fav.png">
+	<meta charset="UTF-8">
+	<title>Register</title>
+	<link rel="stylesheet" href="~/theme/css/bootstrap.css">
+	<link rel="stylesheet" href="~/theme/css/main.css">
+</head>
+<body>
+
+	<section class="login-area section-gap">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-6">
+					<div class="login-form">
+						<h2 class="text-center mb-4">Register</h2>
+
+						@if (!string.IsNullOrEmpty(Model.StatusMessage))
+						{
+							<div class="alert alert-info">
+								@Model.StatusMessage
+							</div>
+						}
+
+						<form method="post">
+							<div class="form-group">
+								<label for="username">Username</label>
+								<input type="text" asp-for="Username" class="form-control" placeholder="Enter your username" required />
+							</div>
+							<div class="form-group">
+								<label for="password">Password</label>
+								<input type="password" asp-for="Password" class="form-control" placeholder="Enter your password" required />
+							</div>
+							<div class="form-group">
+								<label for="fullName">Full Name</label>
+								<input type="text" asp-for="FullName" class="form-control" placeholder="Enter your full name" required />
+							</div>
+							<div class="form-group">
+								<label for="email">Email</label>
+								<input type="email" asp-for="Email" class="form-control" placeholder="Enter your email" required />
+							</div>
+							<div class="form-group">
+								<label for="phone">Phone</label>
+								<input type="tel" asp-for="Phone" class="form-control" placeholder="Enter your phone number" required />
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-primary btn-block">Register</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="~/theme/js/vendor/jquery-2.2.4.min.js"></script>
+	<script src="~/theme/js/vendor/bootstrap.min.js"></script>
+	<script src="~/theme/js/main.js"></script>
+</body>
+</html>

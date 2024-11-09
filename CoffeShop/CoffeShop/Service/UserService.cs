@@ -58,6 +58,42 @@ namespace CoffeShop.Service
 			CoffeShopContext.Ins.SaveChanges();
 		}
 
+		public User CheckExistUser(string username, string email)
+		{
+			var user = CoffeShopContext.Ins.Users
+				.FirstOrDefault(u => u.Username == username || u.Email == email);
+
+			return user;
+		}
+
+		public bool AddUser(User newUser)
+		{
+			try
+			{
+				CoffeShopContext.Ins.Users.Add(newUser);
+				CoffeShopContext.Ins.SaveChanges();
+				return true; 
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				return false; 
+			}
+		}
+
+		public User GetUserByUsername(string username)
+		{
+			var user = CoffeShopContext.Ins.Users
+				.FirstOrDefault(u => u.Username == username);
+
+			if (user == null)
+			{
+				throw new Exception("User not found.");
+			}
+
+			return user;
+		}
+
 
 	}
 }

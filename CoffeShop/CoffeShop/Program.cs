@@ -8,6 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<CoffeShopContext>();
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+	options.IdleTimeout = TimeSpan.FromMinutes(30);
+	options.Cookie.HttpOnly = true;
+	options.Cookie.IsEssential = true;
+});
+
 
 builder.Services.AddScoped<MenuService>();
 builder.Services.AddScoped<CartService>();
@@ -22,6 +30,7 @@ builder.Services.AddScoped<EmailService>();
 
 var app = builder.Build();
 
+app.UseSession();
 
 if (!app.Environment.IsDevelopment())
 {

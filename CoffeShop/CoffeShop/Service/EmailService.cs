@@ -62,6 +62,32 @@ namespace CoffeShop.Service
 			}
 		}
 
+		public async Task SendAccountConfirmationEmail(string toEmail, string userName)
+		{
+			var smtpServer = _config["EmailSettings:SmtpServer"];
+			var port = int.Parse(_config["EmailSettings:Port"]);
+			var senderEmail = _config["EmailSettings:SenderEmail"];
+			var senderName = _config["EmailSettings:SenderName"];
+			var password = _config["EmailSettings:Password"];
+
+			var message = new MailMessage
+			{
+				From = new MailAddress(senderEmail, senderName),
+				Subject = "Account Confirmation",
+				IsBodyHtml = true,
+				Body = GenerateAccountConfirmationEmailBody(userName)
+			};
+
+			message.To.Add(new MailAddress(toEmail));
+
+			using (var client = new SmtpClient(smtpServer, port))
+			{
+				client.Credentials = new NetworkCredential(senderEmail, password);
+				client.EnableSsl = true;
+				await client.SendMailAsync(message);
+			}
+		}
+
 		private string GenerateEmailBody(string userName, Order order)
 		{
 			var items = string.Join("<br>", order.OrderDetails.Select(
@@ -90,6 +116,21 @@ namespace CoffeShop.Service
                 </ul>
                 <p>Please restock these items as soon as possible.</p>
             ";
+		}
+
+		private string GenerateAccountConfirmationEmailBody(string userName)
+		{
+			long timestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
+
+			string confirmationLink = $"https://localhost:7067/CoffeApp/ActiveAccount?username={userName}&timestamp={timestamp}";
+
+			return $@"
+            <h2>Hello {userName},</h2>
+            <p>Thank you for registering with us!</p>
+            <p>Please click the link below to activate your account:</p>
+            <p><a href='{confirmationLink}'>Activate Account</a></p>
+            <p>If you did not register, please ignore this email.</p>
+        ";
 		}
 	}
 }
