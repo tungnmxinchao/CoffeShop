@@ -21,8 +21,9 @@ namespace CoffeShop.Models
         public string? Phone { get; set; }
         public string? Role { get; set; }
         public DateTime? CreatedAt { get; set; }
+        public int? Poins { get; set; }
+        public int? PoinsUsed { get; set; }
 
-        public virtual LoyaltyPoint? LoyaltyPoint { get; set; }
         public virtual ICollection<Cart> Carts { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Order> Orders { get; set; }

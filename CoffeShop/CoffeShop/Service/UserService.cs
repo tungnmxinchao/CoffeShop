@@ -16,5 +16,48 @@ namespace CoffeShop.Service
 
 			return user;
 		}
+
+		public void AddLoyaltyPoints(int userId, int pointsToAdd)
+		{
+			var user = CoffeShopContext.Ins.Users.Find(userId);
+
+			if (user == null)
+			{
+				throw new Exception("User Not Found!");
+			}
+
+			if (user.Poins != null)
+			{
+				user.Poins += pointsToAdd;
+			}
+			else
+			{
+				throw new Exception("User does not have a loyalty points record.");
+			}
+
+			CoffeShopContext.Ins.SaveChanges();
+		}
+
+		public void UpdateUser(User updatedUser)
+		{
+			var user = CoffeShopContext.Ins.Users.Find(updatedUser.UserId);
+
+			if (user == null)
+			{
+				throw new Exception("User Not Found!");
+			}
+
+			user.Username = updatedUser.Username;
+			user.Password = updatedUser.Password;
+			user.FullName = updatedUser.FullName;
+			user.Email = updatedUser.Email;
+			user.Phone = updatedUser.Phone;
+			user.Role = updatedUser.Role;
+			user.Poins = updatedUser.Poins;
+
+			CoffeShopContext.Ins.SaveChanges();
+		}
+
+
 	}
 }

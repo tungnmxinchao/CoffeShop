@@ -45,6 +45,13 @@ namespace CoffeShop.Pages.CoffeApp
 
 		public string SuccessMessage { get; set; }
 
+		[BindProperty]
+		public bool UseLoyaltyPoints { get; set; }
+		[BindProperty]
+		public int? PointsToRedeem { get; set; }
+		[BindProperty]
+		public DateTime ServiceDateTime {  get; set; }
+
 
 
 		public IActionResult OnGet()
@@ -66,7 +73,6 @@ namespace CoffeShop.Pages.CoffeApp
 			}
 
 			var cart = cartService.FindAllCartByUserId(1);
-
 			if (cart == null || cart.Count == 0)
 			{
 				ErrorMessage = "Your cart is empty. Please add items to your cart.";
@@ -78,14 +84,41 @@ namespace CoffeShop.Pages.CoffeApp
 				return Page();
 			}
 
+			decimal discount = 0;
+			if (UseLoyaltyPoints && PointsToRedeem.HasValue)
+			{
+				var user = userService.FindUserById(1);
+
+				if (user.Poins < PointsToRedeem.Value)
+				{
+					ErrorMessage = "You do not have enough loyalty points.";
+					return Page();
+				}
+
+				discount = PointsToRedeem.Value * 0.2m;
+
+				if (discount > TotalCart)
+				{
+					discount = TotalCart;
+					PointsToRedeem = (int)(TotalCart / 0.2m); 
+				}
+
+
+				user.Poins -= PointsToRedeem.Value;
+				user.PoinsUsed = PointsToRedeem.Value;
+				userService.UpdateUser(user);
+			}
+
+			TotalCart -= discount;
+
 			var order = new Order
 			{
 				UserId = 1,
 				TableId = TableNumber,
-				Status = "Pending",
+				Status = "Confirmed",
 				TotalPrice = TotalCart,
 				CreatedAt = DateTime.Now,
-				PointsUsed = 0,
+				PointsUsed = PointsToRedeem ?? 0,
 			};
 
 			foreach (var cartItem in cart)
@@ -107,12 +140,13 @@ namespace CoffeShop.Pages.CoffeApp
 					return Page();
 				}
 
-				SuccessMessage = "Order Successfully!";
+				userService.AddLoyaltyPoints(1, 1);
+				SuccessMessage = "Order placed successfully!";
 				return Page();
-
 			}
 			else
 			{
+				ErrorMessage = "Order placement failed.";
 				return Page();
 			}
 		}

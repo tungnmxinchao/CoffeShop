@@ -115,15 +115,15 @@
 				<div class="form-row mb-3">
 					<div class="col">
 						<label for="fullName" class="font-weight-bold">Full Name</label>
-						<input type="text" readonly class="form-control" asp-for="@Model.User.UserId" placeholder="Enter your full name" style="display:none" />
-						<input type="text" readonly class="form-control" asp-for="@Model.User.FullName" placeholder="Enter your full name" required />
+						<input type="text" readonly class="form-control" asp-for="@Model.User.UserId" style="display:none" />
+						<input type="text" readonly class="form-control" asp-for="@Model.User.FullName" required />
 					</div>
 				</div>
 
 				<div class="form-row mb-3">
 					<div class="col">
 						<label for="phoneNumber" class="font-weight-bold">Phone Number</label>
-						<input type="text" readonly class="form-control" asp-for="@Model.User.Phone" placeholder="Enter your phone number" required />
+						<input type="text" readonly class="form-control" asp-for="@Model.User.Phone" required />
 					</div>
 				</div>
 
@@ -136,9 +136,32 @@
 
 				<div class="form-row mb-3">
 					<div class="col">
+						<label for="serviceDate" class="font-weight-bold">Service Date & Time</label>
+						<input type="datetime-local" class="form-control" asp-for="@Model.ServiceDateTime" required />
+					</div>
+				</div>
+
+				<div class="form-row mb-3">
+					<div class="col">
+						<label for="redeemPoints" class="font-weight-bold">Use Loyalty Points</label>
+						<div class="form-check">
+							<input type="checkbox" class="form-check-input" asp-for="@Model.UseLoyaltyPoints" id="redeemPoints">
+							<label class="form-check-label" for="redeemPoints">Redeem points for this order</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-row mb-3">
+					<div class="col">
+						<label for="pointsToRedeem" class="font-weight-bold">Points to Redeem</label>
+						<input type="number" class="form-control" asp-for="@Model.PointsToRedeem" id="pointsToRedeem" min="1" disabled placeholder="Enter points to redeem" />
+					</div>
+				</div>
+
+				<div class="form-row mb-3">
+					<div class="col">
 						<label for="totalAmount" class="font-weight-bold">Total Amount</label>
-						
-						<input type="text" class="form-control" asp-for="@Model.TotalCart"  readonly />
+						<input type="text" class="form-control" asp-for="@Model.TotalCart" readonly />
 					</div>
 				</div>
 
@@ -146,8 +169,6 @@
 					<button type="submit" class="btn btn-success mt-3">Checkout</button>
 				</div>
 			</form>
-
-
 
 		</div>
 	</section>
@@ -187,6 +208,11 @@
 			form.appendChild(hiddenInput);
 			document.body.appendChild(form);
 			form.submit();
+		});
+
+		document.getElementById('redeemPoints').addEventListener('change', function () {
+			const pointsInput = document.getElementById('pointsToRedeem');
+			pointsInput.disabled = !this.checked;
 		});
 	</script>
 

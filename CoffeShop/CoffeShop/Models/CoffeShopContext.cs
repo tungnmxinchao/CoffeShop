@@ -7,6 +7,7 @@ namespace CoffeShop.Models
 {
     public partial class CoffeShopContext : DbContext
     {
+
         public static CoffeShopContext Ins = new CoffeShopContext();
 		public CoffeShopContext()
         {
@@ -22,12 +23,10 @@ namespace CoffeShop.Models
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
         public virtual DbSet<Inventory> Inventories { get; set; } = null!;
-        public virtual DbSet<LoyaltyPoint> LoyaltyPoints { get; set; } = null!;
         public virtual DbSet<Menu> Menus { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
         public virtual DbSet<ProductIngredient> ProductIngredients { get; set; } = null!;
-        public virtual DbSet<ProductPointRedemption> ProductPointRedemptions { get; set; } = null!;
         public virtual DbSet<Table> Tables { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
@@ -167,28 +166,6 @@ namespace CoffeShop.Models
                     .HasColumnName("unit");
             });
 
-            modelBuilder.Entity<LoyaltyPoint>(entity =>
-            {
-                entity.HasKey(e => e.UserId)
-                    .HasName("PK__LoyaltyP__B9BE370F3C58D3EE");
-
-                entity.Property(e => e.UserId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("user_id");
-
-                entity.Property(e => e.Points)
-                    .HasColumnName("points")
-                    .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.PointsUsed).HasDefaultValueSql("((0))");
-
-                entity.HasOne(d => d.User)
-                    .WithOne(p => p.LoyaltyPoint)
-                    .HasForeignKey<LoyaltyPoint>(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__LoyaltyPo__user___412EB0B6");
-            });
-
             modelBuilder.Entity<Menu>(entity =>
             {
                 entity.ToTable("Menu");
@@ -301,26 +278,6 @@ namespace CoffeShop.Models
                     .HasConstraintName("FK__ProductIn__menu___52593CB8");
             });
 
-            modelBuilder.Entity<ProductPointRedemption>(entity =>
-            {
-                entity.HasKey(e => e.MenuId)
-                    .HasName("PK__ProductP__4CA0FADC1ACD5F6A");
-
-                entity.ToTable("ProductPointRedemption");
-
-                entity.Property(e => e.MenuId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("menu_id");
-
-                entity.Property(e => e.RequiredPoints).HasColumnName("required_points");
-
-                entity.HasOne(d => d.Menu)
-                    .WithOne(p => p.ProductPointRedemption)
-                    .HasForeignKey<ProductPointRedemption>(d => d.MenuId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ProductPo__menu___440B1D61");
-            });
-
             modelBuilder.Entity<Table>(entity =>
             {
                 entity.Property(e => e.TableId).HasColumnName("table_id");
@@ -377,6 +334,14 @@ namespace CoffeShop.Models
                 entity.Property(e => e.Phone)
                     .HasMaxLength(15)
                     .HasColumnName("phone");
+
+                entity.Property(e => e.Poins)
+                    .HasColumnName("poins")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.PoinsUsed)
+                    .HasColumnName("poinsUsed")
+                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Role)
                     .HasMaxLength(50)

@@ -20,7 +20,6 @@ namespace CoffeShop.Models
         public string? ImageUrl { get; set; }
 
         public virtual Category? Category { get; set; }
-        public virtual ProductPointRedemption? ProductPointRedemption { get; set; }
         public virtual ICollection<Cart> Carts { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
         public virtual ICollection<ProductIngredient> ProductIngredients { get; set; }
