@@ -1,5 +1,5 @@
 ﻿@page
-@model CoffeShop.Pages.CoffeApp.Dashboard.ManageMenuModel
+@model CoffeShop.Pages.CoffeApp.Dashboard.ManageInventoryModel
 @{
 }
 <!DOCTYPE html>
@@ -22,19 +22,18 @@
 		<div id="layoutSidenav_content">
 			<main>
 				<div class="container-fluid px-4">
-					<h1 class="mt-4">Menu Management</h1>
+					<h1 class="mt-4">Inventory Management</h1>
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a href="/Dashboard/AddMenu">Dashboard</a></li>
-						<li class="breadcrumb-item active">Menu Management</li>
+						<li class="breadcrumb-item"><a href="/Dashboard/AddInventory">Dashboard</a></li>
+						<li class="breadcrumb-item active">Inventory Management</li>
 					</ol>
 
 					<form method="post" class="mb-4 d-flex align-items-center">
-						<select asp-for="SelectedCategoryId" class="form-select me-2" style="width: 200px" asp-items="@(new SelectList(Model.Category, "CategoryId", "Name"))">
-						</select>
+						<input type="text" placeholder="Input Name Item" name="searchItem" class="form-control" />
 
-						<input name="min" type="number" class="form-control me-2" placeholder="Min Price" style="width: 150px;" />
+						<input type="number" name="min" class="form-control me-2" placeholder="Min Price" style="width: 150px;" />
 
-						<input name="max" type="number" class="form-control me-2" placeholder="Max Price" style="width: 150px;" />
+						<input type="number" name="max" class="form-control me-2" placeholder="Max Price" style="width: 150px;" />
 
 						<button type="submit" class="btn btn-primary">
 							<i class="fas fa-search"></i> Search
@@ -43,48 +42,44 @@
 
 
 					<a href="/CoffeApp/Dashboard/AddMenu" class="btn btn-primary" title="Add New Product">
-						<i class="fas fa-plus"></i> Add Product
+						<i class="fas fa-plus"></i> Add Inventory
 					</a>
 
 					<div class="card mb-4">
 						<div class="card-header">
 							<i class="fas fa-table me-1"></i>
-							Product List
+							Inventory List
 						</div>
 						<div class="card-body">
 							<table id="datatablesSimple">
 								<thead>
 									<tr>
 										<th>ID</th>
-										<th>Image</th>
 										<th>Name</th>
-										<th>Description</th>
+										<th>Quantity</th>
 										<th>Price</th>
-										<th>Category Name</th>
+										<th>Last Restocked</th>
 										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>
-									@foreach (var product in Model.Products)
+									@foreach (var inventory in Model.ListInventory)
 									{
 										<tr>
-											<td>@product.MenuId</td>
+											<td>@inventory.ItemId</td>
+
+											<td>@inventory.Name</td>
+
+											<td>@inventory.Quantity <p>@inventory.Unit</p></td>
+
+											<td>@inventory.Price</td>
+											<td>@inventory.LastRestocked</td>
 											<td>
-												<img src="@product.ImageUrl" alt="Product Image" width="50" height="50" />
-											</td>
-											<td>@product.Name</td>
-											<td>@product.Description</td>
-											<td>@product.Price</td>
-											<td>@product.Category.Name</td>
-											<td>
-												<a href="@Url.Page("/ProductDetails", new { id = product.MenuId })" title="View Details">
-													<i class="fas fa-eye text-primary"></i>
-												</a>
-												<a href="@Url.Page("/EditProduct", new { id = product.MenuId })" title="Edit Product" class="ms-3">
+												<a href="@Url.Page("/EditInvenory", new { id = inventory.ItemId })" title="Edit Inventory" class="ms-3">
 													<i class="fas fa-edit text-warning"></i>
 												</a>
-												<form method="post" asp-page-handler="DeleteProduct" style="display:inline;">
-													<input type="hidden" name="id" value="@product.MenuId" />
+												<form method="post" asp-page-handler="DeleteInventory" style="display:inline;">
+													<input type="hidden" name="id" value="@inventory.ItemId" />
 													<button type="submit" title="Delete" style="background:none; border:none; padding:0;">
 														<i class="fas fa-trash-alt text-danger ms-3"></i>
 													</button>
