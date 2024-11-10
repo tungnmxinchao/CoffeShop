@@ -28,13 +28,16 @@
 						<li class="breadcrumb-item active">Menu Management</li>
 					</ol>
 
-					<form method="post" class="mb-4 d-flex align-items-center">
-						<select asp-for="SelectedCategoryId" class="form-select me-2" style="width: 200px" asp-items="@(new SelectList(Model.Category, "CategoryId", "Name"))">
+					<form method="get" class="mb-4 d-flex align-items-center">
+						<select class="form-select me-2" style="width: 200px;">
+							<option value="">All Categories</option>
+								<option value="tesst">test</option>
+						
 						</select>
 
-						<input name="min" type="number" class="form-control me-2" placeholder="Min Price" style="width: 150px;" />
+						<input type="number" class="form-control me-2" placeholder="Min Price" style="width: 150px;" />
 
-						<input name="max" type="number" class="form-control me-2" placeholder="Max Price" style="width: 150px;" />
+						<input type="number" class="form-control me-2" placeholder="Max Price" style="width: 150px;" />
 
 						<button type="submit" class="btn btn-primary">
 							<i class="fas fa-search"></i> Search
@@ -57,41 +60,52 @@
 									<tr>
 										<th>ID</th>
 										<th>Image</th>
-										<th>Name</th>
-										<th>Description</th>
+										<th>name</th>
 										<th>Price</th>
-										<th>Category Name</th>
+										<th>Category</th>
+										<th>Created At</th>
 										<th>Action</th>
 									</tr>
 								</thead>
+								<tfoot>
+									<tr>
+										<th>ID</th>
+										<th>Image</th>
+										<th>Name</th>
+										<th>Price</th>
+										<th>Category</th>
+										<th>Created At</th>
+										<th>Action</th>
+									</tr>
+								</tfoot>
 								<tbody>
-									@foreach (var product in Model.Products)
-									{
+@* 									@foreach (var product in @Model.Products)
+									{ *@
 										<tr>
-											<td>@product.MenuId</td>
+											<td>1</td>
 											<td>
-												<img src="@product.ImageUrl" alt="Product Image" width="50" height="50" />
+												<img src="1" alt="Product Image" width="50" height="50" />
 											</td>
-											<td>@product.Name</td>
-											<td>@product.Description</td>
-											<td>@product.Price</td>
-											<td>@product.Category.Name</td>
 											<td>
-												<a href="@Url.Page("/ProductDetails", new { id = product.MenuId })" title="View Details">
+												name
+											</td>
+											<td>Price</td>
+											<td>categorytest</td>
+											<td>time</td>
+											<td>
+												<a href="" title="View Details">
 													<i class="fas fa-eye text-primary"></i>
 												</a>
-												<a href="@Url.Page("/EditProduct", new { id = product.MenuId })" title="Edit Product" class="ms-3">
-													<i class="fas fa-edit text-warning"></i>
-												</a>
 												<form method="post" asp-page-handler="DeleteProduct" style="display:inline;">
-													<input type="hidden" name="id" value="@product.MenuId" />
+													<input type="hidden" />
 													<button type="submit" title="Delete" style="background:none; border:none; padding:0;">
 														<i class="fas fa-trash-alt text-danger ms-3"></i>
 													</button>
 												</form>
+
 											</td>
 										</tr>
-									}
+@* 									} *@
 								</tbody>
 							</table>
 						</div>
