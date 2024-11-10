@@ -94,6 +94,11 @@ namespace CoffeShop.Service
 			return user;
 		}
 
+		public List<User> FindAll()
+		{
+			return CoffeShopContext.Ins.Users.ToList();
+		}
+
 
 	}
 }

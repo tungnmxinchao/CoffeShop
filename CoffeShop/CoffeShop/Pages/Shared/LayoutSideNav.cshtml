@@ -15,10 +15,13 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
                     Manage Inventory
                 </a>
-                <a class="nav-link" href="/CoffeApp/Dashboard/ManageStaffs">
-                    <div class="sb-nav-link-icon"><i class="fas fa-calendar-alt"></i></div>
-                    Manage Staff
-                </a>
+                @if (Context.Session.GetString("UserRole") == "Admin")
+                {
+                    <a class="nav-link" href="/CoffeApp/Dashboard/ManageUser">
+                        <div class="sb-nav-link-icon"><i class="fas fa-calendar-alt"></i></div>
+                        Manage User
+                    </a>
+                }
                 <a class="nav-link" href="/CoffeApp/Dashboard/ProfitOrders">
                     <div class="sb-nav-link-icon"><i class="fas fa-calendar-alt"></i></div>
                     Profit Orders
@@ -44,7 +47,7 @@
         <div class="sb-sidenav-footer">
             <div class="small">Logged in as:</div>
             Coffee Shop
-            <a href="/Common/Logout" class="btn btn-danger btn-sm d-block mt-2">Logout</a>
+            <a href="/CoffeApp/Logout" class="btn btn-danger btn-sm d-block mt-2">Logout</a>
         </div>
     </nav>
 </div>
