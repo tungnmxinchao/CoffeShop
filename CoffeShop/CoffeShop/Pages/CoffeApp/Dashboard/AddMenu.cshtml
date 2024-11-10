@@ -1,6 +1,15 @@
 ﻿@page
 @model CoffeShop.Pages.CoffeApp.Dashboard.AddMenuModel
 @{
+	ViewData["Title"] = "Manage Products";
+}
+<h1>Manage Products</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -25,54 +34,81 @@
 					<h1 class="mt-4">Add New Product</h1>
 					<ol class="breadcrumb mb-4">
 						<li class="breadcrumb-item"><a href="/Admin/Dashboard">Dashboard</a></li>
-						<li class="breadcrumb-item"><a href="/Admin/ManageProduct">Menu Management</a></li>
+						<li class="breadcrumb-item"><a href="/CoffeApp/Dashboard/ManageMenu">Menu Management</a></li>
 						<li class="breadcrumb-item active">Add Menu</li>
 					</ol>
-					<form method="post" asp-page-handler="AddProduct" enctype="multipart/form-data">
-						<div class="card mb-4">
-							<div class="card-header">
-								<i class="fas fa-plus me-1"></i>
-								Add Product
-							</div>
-							<div class="card-body">
-								<div class="mb-3">
-									<label class="form-label" for="Name">Product Name</label>
-									<input type="text" class="form-control"  required />
-@* 									<span class="text-danger">@Html.ValidationMessageFor(model => model.AddProductRequest.Name)</span> *@
-								</div>
-								<div class="mb-3">
-									<label class="form-label" for="Price">Price</label>
-									<input type="number" class="form-control"  required step="0.01" min="0" />
-@* 									<span class="text-danger">@Html.ValidationMessageFor(model => model.AddProductRequest.Price)</span> *@
-								</div>
-								<div class="mb-3">
-									<label class="form-label" for="Description">Description</label>
-									<textarea class="form-control"  required rows="3"></textarea>
-@* 									<span class="text-danger">@Html.ValidationMessageFor(model => model.AddProductRequest.Description)</span> *@
-								</div>
-								<div class="mb-3">
-									<label class="form-label" for="Image">Upload Image</label>
-									<input type="file" class="form-control"  required accept="image/*" />
-@* 									<span class="text-danger">@Html.ValidationMessageFor(model => model.AddProductRequest.Image)</span> *@
-								</div>
-								<div class="mb-3">
-									<label class="form-label" for="CategoryId">Category</label>
-									<select class="form-select"  required>
-										<option value="">Select Category</option>
-											<option value="test">test</option>
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-plus me-1"></i>
+                                Add Product
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label" for="Name">Product Name</label>
+                                    <input type="text" class="form-control" id="Name" name="Name" required />
+                                    <span class="text-danger">@Html.ValidationMessageFor(model => model.Name)</span>
+                                </div>
 
-									</select>
-@* 									<span class="text-danger">@Html.ValidationMessageFor(model => model.AddProductRequest.CategoryId)</span> *@
-								</div>
-							</div>
-						</div>
-						<button type="submit" class="btn btn-success">
-							<i class="fas fa-save"></i> Save Product
-						</button>
-						<a href="/Dashboard/ManageMenu" class="btn btn-secondary ms-2">
-							Cancel
-						</a>
-					</form>
+                                <div class="mb-3">
+                                    <label class="form-label" for="Price">Price</label>
+                                    <input type="number" class="form-control" id="Price" name="Price" required step="0.01" min="0" />
+                                    <span class="text-danger">@Html.ValidationMessageFor(model => model.Price)</span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="Description">Description</label>
+                                    <textarea class="form-control" id="Description" name="Description" required rows="3"></textarea>
+                                    <span class="text-danger">@Html.ValidationMessageFor(model => model.Description)</span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="Image">Upload Image</label>
+                                    <input type="file" class="form-control" id="Image" name="Image" required accept="image/*" />
+                                    <span class="text-danger">@Html.ValidationMessageFor(model => model.Image)</span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="CategoryId">Category</label>
+                                    <select class="form-select" id="CategoryId" name="CategoryId" required>
+                                        <option value="">Select Category</option>
+                                        @foreach (var category in Model.Categories)
+                                        {
+                                            <option value="@category.CategoryId">@category.Name</option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="mb-3 text-left">
+                                    <h3><strong>Ingredients</strong></h3>
+                                    @foreach (var ingredient in Model.ListInventory)
+                                    {
+                                        <div class="form-check d-flex align-items-center mb-3">
+                                            <input class="form-check-input me-2" type="checkbox"
+                                                   value="@ingredient.ItemId" name="SelectedIngredients"
+                                                   id="@ingredient.ItemId" />
+                                            <label class="form-check-label me-2" for="@ingredient.Name">
+                                                @ingredient.Name
+                                            </label>
+                                            <div class="mb-3 ms-5">
+                                                <label class="form-label" for="quantity_@ingredient.ItemId">Quantity (gam)</label>
+                                                <input type="number" class="form-control"
+                                                       id="quantity_@ingredient.ItemId"
+                                                       name="QuantityPerProduct[@ingredient.ItemId]"
+                                                       min="0" step="1" placeholder="Enter quantity in grams" />
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> Save Product
+                        </button>
+                        <a href="/Dashboard/ManageMenu" class="btn btn-secondary ms-2">Cancel</a>
+                    </form>
+
 				</div>
 			</main>
 			@await Html.PartialAsync("Shared/FooterAdmin")

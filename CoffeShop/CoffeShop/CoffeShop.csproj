@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Folder Include="DTOs\" />
+    <Folder Include="wwwroot\Image\" />
     <Folder Include="wwwroot\theme\" />
   </ItemGroup>
 

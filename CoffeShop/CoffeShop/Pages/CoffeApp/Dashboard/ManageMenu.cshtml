@@ -77,18 +77,13 @@
 											<td>@product.Price</td>
 											<td>@product.Category.Name</td>
 											<td>
-												<a href="@Url.Page("/ProductDetails", new { id = product.MenuId })" title="View Details">
-													<i class="fas fa-eye text-primary"></i>
+												<a href="/CoffeApp/Dashboard/EditMenu?id=@product.MenuId" title="Edit Inventory" class="ms-3">
+													<i class="fas fa-pencil-alt text-warning"></i>
 												</a>
-												<a href="@Url.Page("/EditProduct", new { id = product.MenuId })" title="Edit Product" class="ms-3">
-													<i class="fas fa-edit text-warning"></i>
+
+												<a href="/CoffeApp/Dashboard/DeleteMenu?id=@product.MenuId" title="Delete Product" class="ms-3">
+													<i class="fas fa-trash text-danger"></i>
 												</a>
-												<form method="post" asp-page-handler="DeleteProduct" style="display:inline;">
-													<input type="hidden" name="id" value="@product.MenuId" />
-													<button type="submit" title="Delete" style="background:none; border:none; padding:0;">
-														<i class="fas fa-trash-alt text-danger ms-3"></i>
-													</button>
-												</form>
 											</td>
 										</tr>
 									}
