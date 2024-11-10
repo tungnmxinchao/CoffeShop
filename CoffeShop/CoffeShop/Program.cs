@@ -51,7 +51,7 @@ app.MapRazorPages();
 
 app.MapGet("/", async context =>
 {
-	context.Response.Redirect("/CoffeApp/Home");
+	context.Response.Redirect("/CoffeApp/Dashboard/ManageInventory");
 });
 
 app.Run();
