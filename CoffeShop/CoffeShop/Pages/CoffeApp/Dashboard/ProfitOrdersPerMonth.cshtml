@@ -1,0 +1,100 @@
+﻿@page
+@model CoffeShop.Pages.CoffeApp.Dashboard.ProfitOrdersPerMonthModel
+@{
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="description" content="Profit Orders Per Month dashboard" />
+	<meta name="author" content="CoffeApp Admin" />
+	<title>Profit Orders Per Month - CoffeApp</title>
+	<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+	<link href="~/admin/css/styles.css" rel="stylesheet" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+</head>
+<body class="sb-nav-fixed">
+	@await Html.PartialAsync("Shared/NavBarAdmin")
+	<div id="layoutSidenav">
+		@await Html.PartialAsync("Shared/LayoutSideNav")
+		<div id="layoutSidenav_content">
+			<main>
+				<div class="container-fluid px-4">
+					<h1 class="mt-4">Profit Orders Per Month</h1>
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a href="/CoffeApp/Dashboard">Dashboard</a></li>
+						<li class="breadcrumb-item active">Profit Orders Per Month</li>
+					</ol>
+
+					<div class="mb-3">
+						<form method="get">
+							<label for="startDate">Start Date:</label>
+							<input type="month" id="startDate" name="startDate" value="@Model.StartDate?.ToString("yyyy-MM")" />
+
+							<label for="endDate">End Date:</label>
+							<input type="month" id="endDate" name="endDate" value="@Model.EndDate?.ToString("yyyy-MM")" />
+
+							<button type="submit">Search</button>
+						</form>
+					</div>
+
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-table me-1"></i>
+							Profit Orders Per Month List
+						</div>
+						<div class="card-body">
+							<table id="datatablesSimple">
+								<thead>
+									<tr>
+										<th>Year</th>
+										<th>Month</th>
+										<th>Total Revenue</th>
+										<th>Total Material Cost</th>
+										<th>Profit</th>
+									</tr>
+								</thead>
+								<tfoot>
+									<tr>
+										<th>Year</th>
+										<th>Month</th>
+										<th>Total Revenue</th>
+										<th>Total Material Cost</th>
+										<th>Profit</th>
+									</tr>
+								</tfoot>
+								<tbody>
+									@foreach (var report in @Model.ProfitOrdersPerMonth)
+									{
+										<tr>
+											<td>@report.OrderYear</td>
+											<td>@report.OrderMonth</td>
+											<td>@report.TotalRevenue $</td>
+											<td>@report.TotalMaterialCost $</td>
+											<td>@report.ProfitLoss $</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</main>
+			@await Html.PartialAsync("Shared/FooterAdmin")
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+	<script src="~/admin/js/scripts.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const datatablesSimple = document.getElementById('datatablesSimple');
+			if (datatablesSimple) {
+				new simpleDatatables.DataTable(datatablesSimple);
+			}
+		});
+	</script>
+</body>
+</html>
