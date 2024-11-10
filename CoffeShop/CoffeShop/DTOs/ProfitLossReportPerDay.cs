@@ -1,11 +1,11 @@
 ﻿namespace CoffeShop.DTOs
 {
-	public class ProfitLossReport
+	public class ProfitLossReportPerDay
 	{
-		public int OrderId { get; set; }
+		public DateTime? OrderDate { get; set; }
 		public decimal TotalRevenue { get; set; }
 		public decimal TotalMaterialCost { get; set; }
 		public decimal ProfitLoss { get; set; }
-		public DateTime? OrderDate { get; set; }
+
 	}
 }

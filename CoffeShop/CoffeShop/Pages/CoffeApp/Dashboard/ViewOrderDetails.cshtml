@@ -36,6 +36,9 @@
 						<div class="card-body">
 							<p><strong>Order ID:</strong> @Model.Order.OrderId</p>
 							<p><strong>Table Number:</strong> @Model.Order.TableId</p>
+							<p><strong>Customer:</strong> @Model.Order.User?.FullName</p>
+							<p><strong>Phone:</strong> @Model.Order.User?.Phone</p>
+							<p><strong>Email:</strong> @Model.Order.User?.Email</p>
 							<p><strong>Poin Uesd:</strong> @Model.Order.PointsUsed</p>
 							<p><strong>Total Price:</strong> @Model.Order.TotalPrice $</p>
 							<p>

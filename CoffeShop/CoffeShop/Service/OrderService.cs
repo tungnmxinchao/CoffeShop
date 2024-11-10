@@ -1,4 +1,5 @@
 ﻿using CoffeShop.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoffeShop.Service
 {
@@ -44,7 +45,7 @@ namespace CoffeShop.Service
 
 		public List<Order> FindAllOrders()
 		{
-			return CoffeShopContext.Ins.Orders.ToList();
+			return CoffeShopContext.Ins.Orders.Include(x => x.User).ToList();
 		}
 
 		public void UpdateOrder(Order order)

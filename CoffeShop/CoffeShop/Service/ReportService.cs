@@ -9,7 +9,6 @@ namespace CoffeShop.Service
 
 		public List<ProfitLossReport> GenerateProfitLossReport()
 		{
-
 			var materialCosts = from pi in CoffeShopContext.Ins.ProductIngredients
 								join i in CoffeShopContext.Ins.Inventories on pi.ItemId equals i.ItemId
 								group new { pi, i } by pi.MenuId into g
@@ -19,15 +18,14 @@ namespace CoffeShop.Service
 									TotalMaterialCost = g.Sum(x => (x.pi.QuantityPerProduct / 1000.0m) * x.i.Price)
 								};
 
-
 			var orderRevenues = from o in CoffeShopContext.Ins.Orders
 								where o.Status == "Confirmed"
 								select new
 								{
 									o.OrderId,
-									o.TotalPrice
+									o.TotalPrice,
+									o.CreatedAt  
 								};
-
 
 			var orderCosts = from od in CoffeShopContext.Ins.OrderDetails
 							 join mc in materialCosts on od.MenuId equals mc.MenuId
@@ -44,8 +42,9 @@ namespace CoffeShop.Service
 						 {
 							 OrderId = orv.OrderId,
 							 TotalRevenue = orv.TotalPrice ?? 0,
-							 TotalMaterialCost = oc.TotalMaterialCost ?? 0, 
-							 ProfitLoss = (orv.TotalPrice ?? 0) - (oc.TotalMaterialCost ?? 0) 
+							 TotalMaterialCost = oc.TotalMaterialCost ?? 0,
+							 ProfitLoss = (orv.TotalPrice ?? 0) - (oc.TotalMaterialCost ?? 0),
+							 OrderDate = orv.CreatedAt  
 						 };
 
 			return report.ToList();

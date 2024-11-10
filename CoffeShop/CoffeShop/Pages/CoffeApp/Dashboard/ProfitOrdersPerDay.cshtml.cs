@@ -5,14 +5,16 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CoffeShop.Pages.CoffeApp.Dashboard
 {
-    public class ProfitOrdersModel : PageModel
+    public class ProfitOrdersPerDayModel : PageModel
     {
         private readonly ReportService reportService;
 
-		public ProfitOrdersModel(ReportService reportService)
+		public ProfitOrdersPerDayModel(ReportService reportService)
 		{
 			this.reportService = reportService;
 		}
+
+        public List<ProfitLossReportPerDay> ProfitOrdersPerDay { get; set; }
 
 		[BindProperty(SupportsGet = true)]
 		public DateTime? StartDate { get; set; }
@@ -20,18 +22,17 @@ namespace CoffeShop.Pages.CoffeApp.Dashboard
 		[BindProperty(SupportsGet = true)]
 		public DateTime? EndDate { get; set; }
 
-		public List<ProfitLossReport> ProfitOrders { get; set; }
-
 		public IActionResult OnGet()
 		{
-			
-			ProfitOrders = reportService.GenerateProfitLossReport();
-
 			if (StartDate.HasValue && EndDate.HasValue)
 			{
-				ProfitOrders = ProfitOrders
-					.Where(order => order.OrderDate >= StartDate.Value && order.OrderDate <= EndDate.Value)
+				ProfitOrdersPerDay = reportService.GenerateProfitLossReportPerDay()
+					.Where(r => r.OrderDate >= StartDate.Value && r.OrderDate <= EndDate.Value)
 					.ToList();
+			}
+			else
+			{
+				ProfitOrdersPerDay = reportService.GenerateProfitLossReportPerDay();
 			}
 
 			return Page();

@@ -64,6 +64,8 @@
 									<tr>
 										<th>Order ID</th>
 										<th>Table Number</th>
+										<th>Customer</th>
+										<th>Phone</th>
 										<th>Point Used</th>
 										<th>Total Price</th>
 										<th>Order Date</th>
@@ -75,6 +77,8 @@
 									<tr>
 										<th>Order ID</th>
 										<th>Table Number</th>
+										<th>Customer</th>
+										<th>Phone</th>
 										<th>Point Used</th>
 										<th>Total Price</th>
 										<th>Order Date</th>
@@ -88,6 +92,8 @@
 										<tr>
 											<td>@order.OrderId</td>
 											<td>@order.TableId</td>
+											<td>@order.User?.FullName</td>
+											<td>@order.User?.Phone</td>
 											<td>@order.PointsUsed</td>
 											<td>@order.TotalPrice $</td>
 											<td>@order.CreatedAt</td>
