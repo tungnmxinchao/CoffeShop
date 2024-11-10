@@ -88,6 +88,42 @@ namespace CoffeShop.Service
 			}
 		}
 
+		public async Task SendCancelOrder(string reason, string userEmail, string userFullName, Order order)
+		{
+			var smtpServer = _config["EmailSettings:SmtpServer"];
+			var port = int.Parse(_config["EmailSettings:Port"]);
+			var senderEmail = _config["EmailSettings:SenderEmail"];
+			var senderName = _config["EmailSettings:SenderName"];
+			var password = _config["EmailSettings:Password"];
+
+			var message = new MailMessage();
+			message.From = new MailAddress(senderEmail, senderName);
+			message.To.Add(new MailAddress(userEmail));  
+			message.Subject = "Order Cancellation Notice";
+			message.IsBodyHtml = true;
+
+		
+			message.Body = GenerateCancellationEmailBody(reason, userFullName, order);
+
+			using (var client = new SmtpClient(smtpServer, port))
+			{
+				client.Credentials = new NetworkCredential(senderEmail, password);
+				client.EnableSsl = true;
+				await client.SendMailAsync(message);
+			}
+		}
+
+		private string GenerateCancellationEmailBody(string reason, string userFullName, Order order)
+		{
+			return $@"
+			<h2>Dear {userFullName},</h2>
+			<p>Your order (Order ID: {order.OrderId}) has been cancelled.</p>
+			<p><strong>Reason for Cancellation:</strong> {reason}</p>
+			<p>We apologize for the inconvenience. We will contact you as soon as possibal to back money</p>
+			<p>Thank you for understanding.</p>
+			";
+		}
+
 		private string GenerateEmailBody(string userName, Order order)
 		{
 			var items = string.Join("<br>", order.OrderDetails.Select(
@@ -132,5 +168,7 @@ namespace CoffeShop.Service
             <p>If you did not register, please ignore this email.</p>
         ";
 		}
+
+
 	}
 }

@@ -28,18 +28,25 @@
 					<li class="menu-active"><a href="/CoffeApp/Home">Home</a></li>
 					<li><a href="/CoffeApp/ViewCart">Cart</a></li>
 					<li><a href="#coffee">Coffee</a></li>
-					<li><a href="TrackingOrderStatus">Tracking Orders</a></li>
-@* 					@if (Context.Session.GetString("Username") != null)
+					
+					@if (Context.Session.GetString("Username") != null)
 					{
-						<li><a href="/Common/Logout">Logout</a></li>
-						<li><a href="/Admin/ManageProduct">Dashboard</a></li>
+						<li><a href="/CoffeApp/OrderHistory">Orders History</a></li>
+						<li><a href="#Point">Your Point : @Context.Session.GetInt32("Point")</a></li>
+						<li><a href="/CoffeApp/Logout">Logout</a></li>					
 
 					}
 					else
 					{
-						<li><a href="/Guest/Login">Login</a></li>
+						<li><a href="/CoffeApp/Login">Login</a></li>
 
-					} *@
+					}
+
+					@if (Context.Session.GetString("UserRole") == "Staff" || Context.Session.GetString("UserRole") == "Admin")
+					{
+						<li><a href="/CoffeApp/Dashboard/ManageMenu">Dashboard</a></li>
+
+					}
 
 					<li class="menu-has-children">
 						<a href="">Pages</a>

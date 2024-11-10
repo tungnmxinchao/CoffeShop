@@ -51,6 +51,7 @@ namespace CoffeShop.Pages.CoffeApp
 				HttpContext.Session.SetInt32("UserId", user.UserId); 
 				HttpContext.Session.SetString("UserRole", user.Role); 
 				HttpContext.Session.SetString("Username", user.FullName);
+				HttpContext.Session.SetInt32("Point", (int)user.Poins);
 
 				return RedirectToPage("/CoffeApp/Home"); 
             }

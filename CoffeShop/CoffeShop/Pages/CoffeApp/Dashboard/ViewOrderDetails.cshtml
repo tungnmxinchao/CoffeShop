@@ -1,0 +1,126 @@
+﻿@page
+@model CoffeShop.Pages.CoffeApp.Dashboard.ViewOrderDetailsModel
+@{
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="description" content="Order details" />
+	<meta name="author" content="CoffeApp Admin" />
+	<title>Order Details - CoffeApp</title>
+	<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+	<link href="~/admin/css/styles.css" rel="stylesheet" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+</head>
+<body class="sb-nav-fixed">
+	@await Html.PartialAsync("Shared/NavBarAdmin")
+	<div id="layoutSidenav">
+		@await Html.PartialAsync("Shared/LayoutSideNav")
+		<div id="layoutSidenav_content">
+			<main>
+				<div class="container-fluid px-4">
+					<h1 class="mt-4">Order Details</h1>
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a href="/CoffeApp/Dashboard">Dashboard</a></li>
+						<li class="breadcrumb-item"><a href="/CoffeApp/Dashboard/ManageOrder">Orders Management</a></li>
+						<li class="breadcrumb-item active">Order Details</li>
+					</ol>
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-receipt me-1"></i>
+							Order Summary
+						</div>
+						<div class="card-body">
+							<p><strong>Order ID:</strong> @Model.Order.OrderId</p>
+							<p><strong>Table Number:</strong> @Model.Order.TableId</p>
+							<p><strong>Poin Uesd:</strong> @Model.Order.PointsUsed</p>
+							<p><strong>Total Price:</strong> @Model.Order.TotalPrice $</p>
+							<p>
+								<strong>Status:</strong>
+								<form method="post" asp-page-handler="UpdateStatus">
+									<select asp-asp-for="@Model.Status" name="Status" class="form-select">
+										<option value="Pending" selected="@(Model.Order.Status == "Pending")">Pending</option>
+										<option value="Confirmed" selected="@(Model.Order.Status == "Confirmed")">Confirmed</option>				
+										<option value="Cancelled" selected="@(Model.Order.Status == "Cancelled")">Cancelled</option>
+									</select>
+
+									<div id="cancellationReason" class="mt-2" style="display: none">
+										<label for="reason">Cancellation Reason:</label>
+										<input type="text" asp-for="@Model.Reason" class="form-control" placeholder="Enter cancellation reason" />
+									</div>
+
+
+									<button type="submit" class="btn btn-primary mt-2">Update Status</button>
+									<input type="hidden" asp-for="@Model.OrderIdUpdate" value="@Model.Order.OrderId" />
+								</form>
+							</p>
+						</div>
+					</div>
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-list me-1"></i>
+							Order Items
+						</div>
+						<div class="card-body">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Image</th>
+										<th>Product Name</th>
+										<th>Quantity</th>
+										<th>Price per Item</th>
+										<th>Total</th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var items in Model.OrderDetails)
+									{
+										<tr>
+											<td><img src="@items.Menu.ImageUrl" alt="Product Image" width="50" height="50" /></td>
+											<td>@items.Menu.Name</td>
+											<td>@items.Quantity</td>
+											<td>@items.Menu.Price</td>
+											<td>@(items.Price)</td>
+										</tr>
+									}
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="3" class="text-end"><strong>Order Total:</strong></td>
+										<td>@Model.Order.TotalPrice $</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+				</div>
+			</main>
+			@await Html.PartialAsync("Shared/FooterAdmin")
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+	<script src="~/admin/js/scripts.js"></script>
+	<script>
+	
+		document.addEventListener("DOMContentLoaded", function () {
+			var statusSelect = document.querySelector('select[name="Status"]'); 
+			var cancellationReason = document.getElementById("cancellationReason"); 
+
+	
+			function toggleCancellationReason() {
+				if (statusSelect.value === "Cancelled") {
+					cancellationReason.style.display = "block"; 
+				} else {
+					cancellationReason.style.display = "none"; 
+				}
+			}
+
+			toggleCancellationReason();
+			statusSelect.addEventListener("change", toggleCancellationReason);
+		});
+	</script>
+</body>
+</html>

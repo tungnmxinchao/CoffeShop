@@ -1,0 +1,107 @@
+﻿@page
+@model CoffeShop.Pages.CoffeApp.OrderHistoryModel
+@{
+}
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="shortcut icon" href="img/fav.png">
+	<meta charset="UTF-8">
+	<title>Tracking Order</title>
+	<link rel="stylesheet" href="~/theme/css/bootstrap.css">
+	<link rel="stylesheet" href="~/theme/css/main.css">
+</head>
+<body>
+	@await Html.PartialAsync("Shared/Header")
+	<!-- Phần Banner -->
+	@await Html.PartialAsync("Shared/Banner")
+
+	<section class="tracking-area section-gap">
+		<div class="container">
+			<h2 class="text-center mb-4">Your History Orders</h2>
+
+			@if (Model.Orders != null && Model.Orders.Count > 0)
+			{
+				<h3 class="text-center mb-4">Order List</h3>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Order ID</th>
+							<th>Order Date</th>
+							<th>Point Used</th>
+							<th>Total Amount</th>
+							<th>Status</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var order in Model.Orders)
+						{
+							<tr>
+								<td>@order.OrderId</td>
+								<td>@order.CreatedAt</td>
+								<td>@order.PointsUsed</td>
+								<td>@order.TotalPrice $</td>
+								<td>@order.Status</td>
+								<td>
+									<form method="post" asp-page-handler="DetailsOrder">
+										<input type="hidden" asp-for="@Model.OrderId" value="@order.OrderId" />
+										<button type="submit" class="btn btn-info">View Details</button>
+									</form>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}
+			else
+			{
+				<p class="text-center text-muted">No orders found</p>
+			}
+
+			<!-- Display Order Details if available -->
+			@if (Model.OrderDetails != null && Model.OrderDetails.Count > 0)
+			{
+				<h3 class="text-center mt-5 mb-4">Order Details</h3>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Image</th>
+							<th>Price</th>
+							<th>Quantity</th>
+							<th>Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var detail in Model.OrderDetails)
+						{
+							var menu = detail.Menu;
+							<tr>
+								<td>@menu.Name</td>
+								<td>
+									<img src="@menu.ImageUrl" alt="@menu.Name" style="width: 50px; height: 50px;" />
+								</td>
+								<td>@menu.Price $</td>
+								<td>@detail.Quantity</td>
+								<td>@(detail.Price) $</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}
+		</div>
+	</section>
+
+
+	<!-- End Cart Area -->
+	<!-- Phần Footer -->
+	@await Html.PartialAsync("Shared/footer")
+
+	<script src="~/theme/js/vendor/jquery-2.2.4.min.js"></script>
+	<script src="~/theme/js/vendor/bootstrap.min.js"></script>
+	<script src="~/theme/js/main.js"></script>
+
+</body>
+</html>

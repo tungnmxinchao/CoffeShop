@@ -1,9 +1,11 @@
+using CoffeShop.Filter;
 using CoffeShop.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CoffeShop.Pages.CoffeApp
 {
+	[RequireUser]
 	public class UpdateCartModel : PageModel
 	{
 		private readonly CartService cartService;
