@@ -1,0 +1,72 @@
+﻿@page
+@model CoffeShop.Pages.CoffeApp.Dashboard.EditMenuModel
+@{
+    ViewData["Title"] = "Edit Product";
+}
+<div class="container">
+    <h1>Edit Product</h1>
+
+    <form asp-route-pid="@@Model.ProductFind.MenuId" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="ProductID" />
+        <div class="mb-3">
+            <label for="name" class="form-label">Product Name</label>
+            <input type="text" class="form-control" id="name" name="Product.Name" value="@Model.ProductFind.Name" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="Product.Description" rows="3" required>@Model.ProductFind.Description</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" class="form-control" id="price" name="Product.Price" value="@Model.ProductFind.Price" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select asp-for="SelectedCategoryId" class="form-select me-2" style="width: 200px" asp-items="@(new SelectList(Model.Categories, "CategoryId", "Name"))">
+                </select>
+
+        </div>
+
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Product Image</label>
+            <input type="file" class="form-control" id="image" name="Image" />
+            @if (!string.IsNullOrEmpty(Model.ProductFind.ImageUrl))
+            {
+                <img src="@Model.ProductFind.ImageUrl" alt="Product Image" width="100" />
+            }
+        </div>
+
+
+        <div class="mb-3 text-left">
+            <h3><strong>Ingredients</strong></h3>
+            @foreach (var ingredient in Model.ListInventory)
+            {
+                bool isChecked = Model.SelectedIngredients.Contains(ingredient.ItemId);
+                int quantity = Model.QuantityPerProduct.ContainsKey(ingredient.ItemId) ? Model.QuantityPerProduct[ingredient.ItemId] : 0;
+
+                <div class="form-check d-flex align-items-center mb-3">
+                    <input class="form-check-input me-2" type="checkbox"
+                           value="@ingredient.ItemId" name="SelectedIngredients"
+                           id="@ingredient.ItemId" @(isChecked ? "checked" : "") />
+                    <label class="form-check-label me-2" for="@ingredient.ItemId">
+                        @ingredient.Name
+                    </label>
+                    <div class="mb-3 ms-5">
+                        <label class="form-label" for="quantity_@ingredient.ItemId">Quantity (grams)</label>
+                        <input type="number" class="form-control"
+                               id="quantity_@ingredient.ItemId"
+                               name="QuantityPerProduct[@ingredient.ItemId]"
+                               value="@quantity"
+                               min="0" step="1" placeholder="Enter quantity in grams" />
+                    </div>
+                </div>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Product</button>
+    </form>
+</div>

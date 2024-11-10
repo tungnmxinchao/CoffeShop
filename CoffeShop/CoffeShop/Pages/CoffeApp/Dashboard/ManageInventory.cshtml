@@ -27,24 +27,6 @@
 						<li class="breadcrumb-item"><a href="/Dashboard/AddInventory">Dashboard</a></li>
 						<li class="breadcrumb-item active">Inventory Management</li>
 					</ol>
-
-					<form method="post" class="mb-4 d-flex align-items-center">
-						<input type="text" placeholder="Input Name Item" name="searchItem" class="form-control" />
-
-						<input type="number" name="min" class="form-control me-2" placeholder="Min Price" style="width: 150px;" />
-
-						<input type="number" name="max" class="form-control me-2" placeholder="Max Price" style="width: 150px;" />
-
-						<button type="submit" class="btn btn-primary">
-							<i class="fas fa-search"></i> Search
-						</button>
-					</form>
-
-
-					<a href="/CoffeApp/Dashboard/AddMenu" class="btn btn-primary" title="Add New Product">
-						<i class="fas fa-plus"></i> Add Inventory
-					</a>
-
 					<div class="card mb-4">
 						<div class="card-header">
 							<i class="fas fa-table me-1"></i>
@@ -58,6 +40,7 @@
 										<th>Name</th>
 										<th>Quantity</th>
 										<th>Price</th>
+										<th>Minimum Quantity</th>
 										<th>Last Restocked</th>
 										<th>Action</th>
 									</tr>
@@ -70,20 +53,19 @@
 
 											<td>@inventory.Name</td>
 
-											<td>@inventory.Quantity <p>@inventory.Unit</p></td>
+											<td>@inventory.Quantity @inventory.Unit</td>
 
 											<td>@inventory.Price</td>
+											<td>@inventory.MinimumQuantity</td>
 											<td>@inventory.LastRestocked</td>
 											<td>
-												<a href="@Url.Page("/EditInvenory", new { id = inventory.ItemId })" title="Edit Inventory" class="ms-3">
-													<i class="fas fa-edit text-warning"></i>
+												<a href="/CoffeApp/Dashboard/EditInventory?id=@inventory.ItemId" title="Edit Inventory" class="ms-3">
+													<i class="fas fa-pencil-alt text-warning"></i>
 												</a>
-												<form method="post" asp-page-handler="DeleteInventory" style="display:inline;">
-													<input type="hidden" name="id" value="@inventory.ItemId" />
-													<button type="submit" title="Delete" style="background:none; border:none; padding:0;">
-														<i class="fas fa-trash-alt text-danger ms-3"></i>
-													</button>
-												</form>
+
+												<a href="/CoffeApp/Dashboard/AddInventory" title="Insert New Product" class="ms-3">
+													<i class="fas fa-plus text-success"></i>
+												</a>
 											</td>
 										</tr>
 									}

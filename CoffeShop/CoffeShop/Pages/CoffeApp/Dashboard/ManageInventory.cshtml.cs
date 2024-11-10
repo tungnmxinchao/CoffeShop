@@ -13,5 +13,7 @@ namespace CoffeShop.Pages.CoffeApp.Dashboard
 			ListInventory = CoffeShopContext.Ins.Inventories.ToList();
 
 		}
+
+
     }
 }
