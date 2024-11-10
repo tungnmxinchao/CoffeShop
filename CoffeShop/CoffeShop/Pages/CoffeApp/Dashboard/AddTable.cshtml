@@ -1,0 +1,73 @@
+﻿@page
+@model CoffeShop.Pages.CoffeApp.Dashboard.AddTableModel
+@{
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CoffeApp</title>
+    <link href="~/admin/css/styles.css" rel="stylesheet" />
+</head>
+<body class="sb-nav-fixed">
+    @await Html.PartialAsync("Shared/NavBarAdmin")
+    <div id="layoutSidenav">
+        @await Html.PartialAsync("Shared/LayoutSideNav")
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Add Table</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="/Dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Add Table</li>
+                    </ol>
+                    @if (!string.IsNullOrEmpty(Model.Message))
+                    {
+                        <div class="alert alert-info" role="alert">
+                            @Model.Message
+                        </div>
+                    }
+
+                    <form method="post" class="card p-4">
+                        <div class="mb-3">
+                            <label asp-for="Table.Status" class="form-label">Status</label>
+                            <select asp-for="Table.Status" class="form-select">
+                                <option value="Available">Available</option>
+                                <option value="Occupied">Occupied</option>
+                                <option value="Reserved">Reserved</option>
+                                <option value="Under Maintenance">Under Maintenance</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Table.Capacity" class="form-label">Capacity</label>
+                            <input asp-for="Table.Capacity" type="number" min="1" class="form-control" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Table.Location" class="form-label">Location</label>
+                            <input asp-for="Table.Location" type="text" class="form-control" placeholder="e.g., Patio, Main Hall" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Table.Waiter" class="form-label">Waiter</label>
+                            <select asp-for="Table.Waiter" class="form-select">
+                                @foreach ( var staff in Model.Staffs)
+                                {
+                                    <option value="@staff.UserId">@staff.FullName</option>
+                                }
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary mt-3">
+                            <i class="fas fa-save"></i> Save
+                        </button>
+                    </form>
+                </div>
+            </main>
+            @await Html.PartialAsync("Shared/FooterAdmin")
+        </div>
+    </div>
+</body>
+</html>

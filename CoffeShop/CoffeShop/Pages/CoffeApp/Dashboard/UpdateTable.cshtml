@@ -1,0 +1,77 @@
+﻿@page
+@model CoffeShop.Pages.CoffeApp.Dashboard.UpdateTableModel
+@{
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="description" content="Update table information" />
+	<meta name="author" content="CoffeApp Admin" />
+	<title>Update Table - CoffeApp</title>
+	<link href="~/admin/css/styles.css" rel="stylesheet" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+	@await Html.PartialAsync("Shared/NavBarAdmin")
+	<div id="layoutSidenav">
+		@await Html.PartialAsync("Shared/LayoutSideNav")
+		<div id="layoutSidenav_content">
+			<main>
+				<div class="container-fluid px-4">
+					<h1 class="mt-4">Update Table</h1>
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a href="/CoffeApp/Dashboard/ManageMenu">Dashboard</a></li>
+						<li class="breadcrumb-item"><a href="/CoffeApp/Dashboard/ManageTable">Manage Tables</a></li>
+						<li class="breadcrumb-item active">Update Table</li>
+					</ol>
+
+
+					<form method="post">
+						<div class="mb-3">
+							<label for="status" class="form-label">Status</label>
+							<select class="form-select" id="status" name="Table.Status">
+								<option value="Available" selected="@(Model.Table.Status == "Available")">Available</option>
+								<option value="Occupied" selected="@(Model.Table.Status == "Occupied")">Occupied</option>
+								<option value="Reserved" selected="@(Model.Table.Status == "Reserved")">Reserved</option>
+								<option value="Under Maintenance" selected="@(Model.Table.Status == "Under Maintenance")">Under Maintenance</option>
+							</select>
+						</div>
+
+						<div class="mb-3">
+							<label for="capacity" class="form-label">Capacity</label>
+							<input type="number" class="form-control" id="capacity" name="Table.Capacity" value="@Model.Table.Capacity" />
+						</div>
+
+						<div class="mb-3">
+							<label for="location" class="form-label">Location</label>
+							<input type="text" class="form-control" id="location" name="Table.Location" value="@Model.Table.Location" />
+						</div>
+
+						<div class="mb-3">
+							<label for="reservationTime" class="form-label">Reservation Time</label>
+							<input type="datetime-local" class="form-control" id="reservationTime" name="Table.ReservationTime" value="@Model.Table.ReservationTime" />
+						</div>
+
+						<div class="mb-3">
+							<label for="waiter" class="form-label">Waiter</label>
+							<select class="form-select" id="waiter" name="Table.Waiter">
+								@foreach (var waiter in Model.Staffs)
+								{
+									<option value="@waiter.UserId" selected="@( waiter.UserId == Model.Table.Waiter )">@waiter.FullName</option>
+								}
+							</select>
+						</div>
+
+						<button type="submit" class="btn btn-primary">Update Table</button>
+					</form>
+				</div>
+			</main>
+			@await Html.PartialAsync("Shared/FooterAdmin")
+		</div>
+	</div>
+	<script src="~/admin/js/scripts.js"></script>
+</body>
+</html>

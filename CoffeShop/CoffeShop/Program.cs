@@ -27,6 +27,7 @@ builder.Services.AddScoped<InventoryService>();
 builder.Services.AddScoped<OrderDetailsService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ReportService>();
+builder.Services.AddScoped<StaffService>();
 
 
 

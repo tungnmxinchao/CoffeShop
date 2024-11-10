@@ -1,4 +1,5 @@
 ﻿using CoffeShop.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoffeShop.Service
 {
@@ -7,7 +8,7 @@ namespace CoffeShop.Service
 
 		public List<Table> FindAllTable()
 		{
-			return CoffeShopContext.Ins.Tables.ToList();
+			return CoffeShopContext.Ins.Tables.Include(x => x.WaiterNavigation).ToList();
 		}
 		public bool UpdateTable(Table table)
 		{
@@ -41,5 +42,26 @@ namespace CoffeShop.Service
 			return table;
 		}
 
-	}
+        public bool AddTable(Table table)
+        {
+            if (table == null)
+            {
+				return false;
+            }
+
+            try
+            {
+                CoffeShopContext.Ins.Tables.Add(table);
+                CoffeShopContext.Ins.SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
+    }
 }
