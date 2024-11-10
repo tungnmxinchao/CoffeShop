@@ -6,7 +6,7 @@ namespace CoffeShop.Service
 	public class InventoryService
 	{
 
-		public Inventory? GetInventoryItem(int itemId)
+		public Inventory? GetInventoryItem(int? itemId)
 		{
 			return CoffeShopContext.Ins.Inventories.FirstOrDefault(x => x.ItemId == itemId);
 		}
