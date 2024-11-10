@@ -63,7 +63,7 @@ namespace CoffeShop.Service
 
 			return CoffeShopContext.Ins.Orders
 				.Include(x => x.User)
-				.Where(o => o.TableId == tableId)  
+				.Where(o => o.TableId == tableId && o.Status == "Confirmed")  
 				.OrderByDescending(o => o.OrderId)  
 				.FirstOrDefault();  
 		}

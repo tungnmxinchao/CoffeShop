@@ -86,6 +86,12 @@ namespace CoffeShop.Pages.CoffeApp.Dashboard
 					Task.Run(() => emailService.SendCancelOrder(Reason, user.Email, user.FullName, order));
 				}
 			}
+			else
+			{
+				var order = orderService.FindOrderById(OrderIdUpdate);
+				order.Status = Status;
+				orderService.UpdateOrder(order);
+			}
 
 			OrderId = OrderIdUpdate;
 			LoadPage();

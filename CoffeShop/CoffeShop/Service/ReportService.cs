@@ -19,7 +19,7 @@ namespace CoffeShop.Service
 								};
 
 			var orderRevenues = from o in CoffeShopContext.Ins.Orders
-								where o.Status == "Confirmed"
+								where o.Status == "Complete"
 								select new
 								{
 									o.OrderId,
@@ -64,7 +64,7 @@ namespace CoffeShop.Service
 
 
 			var orderRevenues = from o in CoffeShopContext.Ins.Orders
-								where o.Status == "Confirmed"
+								where o.Status == "Complete"
 								select new
 								{
 									o.OrderId,
@@ -111,7 +111,7 @@ namespace CoffeShop.Service
 
 		
 			var orderRevenues = from o in CoffeShopContext.Ins.Orders
-								where o.Status == "Confirmed"
+								where o.Status == "Complete"
 								select new
 								{
 									o.OrderId,
