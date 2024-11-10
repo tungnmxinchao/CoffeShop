@@ -26,6 +26,7 @@ builder.Services.AddScoped<IngredientService>();
 builder.Services.AddScoped<InventoryService>();
 builder.Services.AddScoped<OrderDetailsService>();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<ReportService>();
 
 
 
