@@ -1,0 +1,122 @@
+﻿@page
+@model CoffeShop.Pages.CoffeApp.Dashboard.TableServiceProcessModel
+@{
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="description" content="Table service management" />
+	<meta name="author" content="CoffeApp Admin" />
+	<title>Table Service Process</title>
+	<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+	<link href="~/admin/css/styles.css" rel="stylesheet" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+</head>
+<body class="sb-nav-fixed">
+	@await Html.PartialAsync("Shared/NavBarAdmin")
+	<div id="layoutSidenav">
+		@await Html.PartialAsync("Shared/LayoutSideNav")
+		<div id="layoutSidenav_content">
+			<main>
+				<div class="container-fluid px-4">
+					<h1 class="mt-4">Table Service Process</h1>
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a href="/Dashboard">Dashboard</a></li>
+						<li class="breadcrumb-item active">Table Service Process</li>
+					</ol>
+
+					<div class="row">
+						@foreach (var table in Model.Tables)
+						{
+							<div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+								<div class="card text-center table-card @table.Status?.ToLower()">
+									<div class="card-body">
+										<h5 class="card-title">Table @table.TableId</h5>
+										<p class="card-text">@table.Status</p>
+
+
+										<form method="post" class="form-inline">
+											<input type="hidden" asp-for="@Model.TableId" value="@table.TableId" />
+											<select asp-for="@Model.TableStatus" class="form-select">
+												<option value="Available" selected="@(table.Status == "Available")">Available</option>
+												<option value="Occupied" selected="@(table.Status == "Occupied")">Occupied</option>
+												<option value="Reserved" selected="@(table.Status == "Reserved")">Reserved</option>
+												<option value="Under Maintenance" selected="@(table.Status == "Under Maintenance")">Under Maintenance</option>
+											</select>
+											<button type="submit" class="btn btn-primary mt-2">Update Status</button>
+										</form>
+
+
+										@if (table.Status == "Reserved" && table.ReservationTime.HasValue)
+										{
+											<div class="mt-3">
+												<label for="serviceTime" class="form-label">Service Time:</label>
+												<p>@table.ReservationTime?.ToString("yyyy-MM-dd HH:mm")</p>
+											</div>
+										}
+									</div>
+								</div>
+							</div>
+						}
+					</div>
+
+
+					<h2>Reserved Orders</h2>
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-box-open me-1"></i>
+							Reserved Orders
+						</div>
+						<div class="card-body">
+							@foreach (var table in Model.Tables)
+							{
+								if (Model.ReservedOrders.ContainsKey(table.TableId))
+								{
+									<h4>Table @table.TableId</h4>
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Order ID</th>
+												<th>Customer</th>
+												<th>Phone</th>
+												<th>Point Used</th>
+												<th>Status</th>
+												<th>Total</th>
+												<th>Action</th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach (var order in Model.ReservedOrders[table.TableId])
+											{
+												<tr>
+													<td>@order.OrderId</td>
+													<td>@order.User.FullName</td>
+													<td>@order.User.Phone</td>
+													<td>@order.PointsUsed</td>
+													<td>@order.Status</td>
+													<td>@order.TotalPrice $</td>
+													<td>
+														<a href="@Url.Page("/CoffeApp/Dashboard/ViewOrderDetails", new { OrderId = order.OrderId })" class="btn btn-info">View Details</a>
+													</td>
+												</tr>
+											}
+										</tbody>
+									</table>
+								}
+							}
+						</div>
+					</div>
+
+				</div>
+			</main>
+			@await Html.PartialAsync("Shared/FooterAdmin")
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+	<script src="~/admin/js/scripts.js"></script>
+</body>
+</html>

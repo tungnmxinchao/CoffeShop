@@ -57,5 +57,15 @@ namespace CoffeShop.Service
 			CoffeShopContext.Ins.SaveChanges();
 
 		}
+
+		public Order? GetLatestOrderByTableId(int tableId)
+		{
+
+			return CoffeShopContext.Ins.Orders
+				.Include(x => x.User)
+				.Where(o => o.TableId == tableId)  
+				.OrderByDescending(o => o.OrderId)  
+				.FirstOrDefault();  
+		}
 	}
 }
