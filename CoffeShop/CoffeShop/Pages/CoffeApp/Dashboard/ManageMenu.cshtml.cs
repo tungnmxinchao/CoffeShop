@@ -1,3 +1,4 @@
+using CoffeShop.Filter;
 using CoffeShop.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -5,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoffeShop.Pages.CoffeApp.Dashboard
 {
+    [RequireManager]
     public class ManageMenuModel : PageModel
     {
         public List<Menu> Products { get; set; }

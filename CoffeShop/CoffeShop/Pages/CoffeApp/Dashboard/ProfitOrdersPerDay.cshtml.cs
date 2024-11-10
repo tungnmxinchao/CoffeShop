@@ -1,10 +1,12 @@
 using CoffeShop.DTOs;
+using CoffeShop.Filter;
 using CoffeShop.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CoffeShop.Pages.CoffeApp.Dashboard
 {
+    [RequireManager]
     public class ProfitOrdersPerDayModel : PageModel
     {
         private readonly ReportService reportService;

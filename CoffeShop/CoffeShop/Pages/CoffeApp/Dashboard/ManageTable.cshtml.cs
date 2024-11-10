@@ -1,3 +1,4 @@
+using CoffeShop.Filter;
 using CoffeShop.Models;
 using CoffeShop.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CoffeShop.Pages.CoffeApp.Dashboard
 {
+    [RequireManager]
     public class ManageTableModel : PageModel
     {
         private readonly TableService tableService;
