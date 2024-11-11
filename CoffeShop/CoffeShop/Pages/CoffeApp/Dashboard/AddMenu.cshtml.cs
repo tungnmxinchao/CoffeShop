@@ -46,7 +46,7 @@ namespace CoffeShop.Pages.CoffeApp.Dashboard
         public async Task<IActionResult> OnPostAsync()
         {
                 string fileName = Path.GetFileName(Image.FileName);
-                string folderPath = Path.Combine("D:", "Semester 7", "ASM_PRN", "Final PRN211", "Final PRN211", "CoffeShop", "CoffeShop", "CoffeShop", "wwwroot", "Image");
+                string folderPath = Path.Combine("D:", "semester_fpt", "semester 7", "tryhardCoffeShop", "CoffeShop", "CoffeShop", "wwwroot", "images");
 
                 if (!Directory.Exists(folderPath))
                 {
